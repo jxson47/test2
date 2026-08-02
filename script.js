@@ -1,28 +1,35 @@
+// Automatischer Zurück-Button
 
-function register(){
+document.addEventListener("DOMContentLoaded", () => {
 
-alert("Registrierung wird später mit Firebase verbunden.");
+    const button = document.createElement("button");
 
-}
+    button.innerHTML = "← Zurück";
+
+    button.className = "back-button";
+
+    button.onclick = () => {
+        history.back();
+    };
+
+    document.body.prepend(button);
 
 
+});
+
+
+
+// Test Login / Registrierung Platzhalter
 
 function login(){
 
-let email=document.getElementById("email").value;
-
-
-if(email==""){
-
-alert("Bitte E-Mail eingeben");
+    alert("Login-System wird später mit Firebase verbunden.");
 
 }
 
-else {
 
-alert("Login wird später aktiviert.");
+function register(){
 
-}
-
+    alert("Registrierung wird später mit Firebase verbunden.");
 
 }
