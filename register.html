@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="de">
 
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Registrierung</title>
+<title>Registrierung | RollerWerkstatt</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -23,28 +23,101 @@
 
 
 <h1>
-Konto erstellen
+👤 Kundenkonto erstellen
 </h1>
 
 
-<input placeholder="Name">
+<p>
+Erstelle dein Konto für Shop, Bestellungen und spätere Reparaturaufträge.
+</p>
 
 
-<input placeholder="E-Mail">
+<br>
 
 
-<input placeholder="Passwort" type="password">
+<form id="registerForm">
 
 
-<button onclick="register()">
-Registrieren
+<input 
+type="text" 
+id="name"
+placeholder="Vor- und Nachname"
+required>
+
+
+
+<input 
+type="email"
+id="email"
+placeholder="E-Mail Adresse"
+required>
+
+
+
+<input
+type="password"
+id="password"
+placeholder="Passwort"
+required>
+
+
+
+<input
+type="text"
+id="street"
+placeholder="Straße und Hausnummer"
+required>
+
+
+
+<input
+type="text"
+id="zip"
+placeholder="Postleitzahl"
+required>
+
+
+
+<input
+type="text"
+id="city"
+placeholder="Ort"
+required>
+
+
+
+<input
+type="tel"
+id="phone"
+placeholder="Telefonnummer"
+required>
+
+
+
+<button type="submit">
+Konto erstellen
 </button>
 
 
+</form>
+
+
+
+<br>
+
+
+<a href="login.html">
+Bereits ein Konto? Login
+</a>
+
+
+
 </div>
 
 
 </div>
+
+
 
 
 
