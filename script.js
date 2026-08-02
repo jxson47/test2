@@ -1,126 +1,125 @@
-// ==========================
-// Automatischer Zurück Button
-// ==========================
+document.addEventListener("DOMContentLoaded", function () {
 
 
-document.addEventListener("DOMContentLoaded", () => {
+    // Zurück Button nur auf Unterseiten
+
+    let currentPage = window.location.pathname.split("/").pop();
 
 
-let page = window.location.pathname.split("/").pop();
+    let pagesWithoutBack = [
+        "",
+        "index.html"
+    ];
 
 
-
-if(page !== "index.html" && page !== ""){
-
-
-const button = document.createElement("button");
+    if(!pagesWithoutBack.includes(currentPage)) {
 
 
-button.innerHTML="← Zurück";
+        let backButton = document.createElement("button");
 
 
-button.className="back-button";
+        backButton.innerHTML = "← Zurück";
 
 
-button.onclick=()=>{
-
-history.back();
-
-};
+        backButton.className = "back-button";
 
 
-document.body.prepend(button);
+        backButton.onclick = function(){
+
+            window.history.back();
+
+        };
 
 
-}
+        document.body.appendChild(backButton);
 
-
-
-
-
-// Registrierung vorbereiten
-
-
-const registerForm = document.getElementById("registerForm");
-
-
-if(registerForm){
-
-
-registerForm.addEventListener("submit", function(e){
-
-
-e.preventDefault();
-
-
-
-let user = {
-
-
-name:
-document.getElementById("name").value,
-
-
-email:
-document.getElementById("email").value,
-
-
-password:
-document.getElementById("password").value,
-
-
-street:
-document.getElementById("street").value,
-
-
-zip:
-document.getElementById("zip").value,
-
-
-city:
-document.getElementById("city").value,
-
-
-phone:
-document.getElementById("phone").value
-
-
-
-};
+    }
 
 
 
 
+    // Registrierung vorbereiten
 
-console.log("Benutzerdaten:", user);
+    const registerForm =
+    document.getElementById("registerForm");
 
 
 
-alert(
-"Registrierung vorbereitet. Firebase wird als nächstes verbunden."
-);
+    if(registerForm){
+
+
+        registerForm.addEventListener("submit", function(e){
+
+
+            e.preventDefault();
+
+
+
+            const customer = {
+
+
+                name:
+                document.getElementById("name").value,
+
+
+                email:
+                document.getElementById("email").value,
+
+
+                password:
+                document.getElementById("password").value,
+
+
+                address:
+                {
+
+                    street:
+                    document.getElementById("street").value,
+
+
+                    zip:
+                    document.getElementById("zip").value,
+
+
+                    city:
+                    document.getElementById("city").value
+
+                },
+
+
+                phone:
+                document.getElementById("phone").value
+
+
+            };
+
+
+
+            console.log(customer);
+
+
+
+            alert(
+            "Konto vorbereitet. Firebase wird als nächstes verbunden."
+            );
+
+
+        });
+
+
+    }
 
 
 
 });
 
-}
 
 
-});
-
-
-
-
-
-// Login Platzhalter
 
 function login(){
 
-
 alert(
-"Login wird als nächstes mit Firebase verbunden."
+"Login wird später über Firebase aktiviert."
 );
-
 
 }
