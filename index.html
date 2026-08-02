@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RollerWerkstatt | Professionelle Roller Reparatur</title>
+
+<style>
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background:#0f1115;
+    color:white;
+}
+
+header {
+    background:#11151c;
+    padding:20px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo {
+    font-size:26px;
+    font-weight:bold;
+    color:#00b7ff;
+}
+
+nav a {
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+    font-size:16px;
+}
+
+nav a:hover {
+    color:#00b7ff;
+}
+
+
+.hero {
+    min-height:90vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:50px 10%;
+
+    background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.8)),
+    url("yamaha-aerox.jpg");
+
+    background-size:cover;
+    background-position:center;
+}
+
+
+.hero h1 {
+    font-size:55px;
+    margin-bottom:20px;
+}
+
+.hero span {
+    color:#00b7ff;
+}
+
+.hero p {
+    font-size:20px;
+    max-width:700px;
+    margin:auto;
+    color:#ddd;
+}
+
+
+.button {
+    display:inline-block;
+    margin-top:30px;
+    padding:15px 35px;
+    background:#00b7ff;
+    color:black;
+    text-decoration:none;
+    border-radius:30px;
+    font-weight:bold;
+}
+
+
+section {
+    padding:70px 10%;
+}
+
+
+.title {
+    text-align:center;
+    font-size:35px;
+    margin-bottom:40px;
+}
+
+
+.cards {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+
+.card {
+
+    background:#171b22;
+    padding:30px;
+    border-radius:15px;
+    border:1px solid #242b35;
+}
+
+
+.card h3 {
+    color:#00b7ff;
+    margin-bottom:15px;
+}
+
+
+.card p {
+    color:#ccc;
+    line-height:1.6;
+}
+
+
+
+.about {
+
+    background:#13171d;
+}
+
+
+.contact {
+
+    text-align:center;
+
+}
+
+
+.contact-box {
+
+    background:#171b22;
+    padding:40px;
+    border-radius:15px;
+    max-width:700px;
+    margin:auto;
+
+}
+
+
+footer {
+
+    background:#080a0d;
+    text-align:center;
+    padding:25px;
+    color:#aaa;
+
+}
+
+
+
+@media(max-width:700px){
+
+header {
+    flex-direction:column;
+}
+
+nav {
+    margin-top:15px;
+}
+
+.hero h1 {
+    font-size:38px;
+}
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<div class="logo">
+🔧 RollerWerkstatt
+</div>
+
+
+<nav>
+
+<a href="#start">Start</a>
+<a href="#leistungen">Leistungen</a>
+<a href="#info">Info</a>
+<a href="#kontakt">Kontakt</a>
+
+</nav>
+
+</header>
+
+
+
+
+<section class="hero" id="start">
+
+<div>
+
+<h1>
+Professionelle <span>Roller Reparatur</span>
+</h1>
+
+
+<p>
+Ihre Fachwerkstatt für Zweitakt-Roller.
+Wir reparieren, warten und optimieren viele bekannte Roller-Modelle mit Erfahrung und Leidenschaft.
+</p>
+
+
+<a class="button" href="#kontakt">
+Kontakt aufnehmen
+</a>
+
+
+</div>
+
+</section>
+
+
+
+
+
+<section id="leistungen">
+
+<h2 class="title">
+Unsere Leistungen
+</h2>
+
+
+<div class="cards">
+
+
+<div class="card">
+
+<h3>🔧 Reparaturen</h3>
+
+<p>
+Motorprobleme, Elektrik, Vergaser, Antrieb, Wartung und viele weitere Reparaturen rund um Ihren Roller.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>📋 Kostenvoranschlag</h3>
+
+<p>
+Vor größeren Reparaturen erhalten Sie eine transparente Einschätzung der notwendigen Arbeiten.
+</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>⚙️ Motorenservice</h3>
+
+<p>
+Spezialisiert auf viele Zweitaktmotoren und typische Roller-Technik.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>🏁 Fehlerdiagnose</h3>
+
+<p>
+Wir suchen die Ursache und finden eine passende Lösung für Ihr Fahrzeug.
+</p>
+
+</div>
+
+
+
+</div>
+
+</section>
+
+
+
+
+
+
+<section class="about" id="info">
+
+
+<h2 class="title">
+Über die Werkstatt
+</h2>
+
+
+<div class="card">
+
+<p>
+
+Wir haben uns hauptsächlich auf Zweitakt-Roller spezialisiert.
+Dazu gehören unter anderem viele Modelle mit:
+
+<br><br>
+
+• Minarelli liegend  
+<br>
+• Minarelli stehend  
+<br>
+• Peugeot liegend  
+<br>
+• Peugeot stehend  
+<br>
+• Piaggio Motoren (teilweise)
+
+<br><br>
+
+Nicht jeder Roller ist gleich – deshalb arbeiten wir individuell und mit Erfahrung an vielen verschiedenen Modellen.
+
+</p>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<section id="kontakt" class="contact">
+
+
+<h2 class="title">
+Kontakt
+</h2>
+
+
+<div class="contact-box">
+
+
+<h3>
+📞 Roller abgeben oder Anfrage stellen
+</h3>
+
+
+<br>
+
+
+<p>
+Schreiben Sie uns gerne für Fragen, Reparaturen oder einen Kostenvoranschlag.
+</p>
+
+
+<br>
+
+
+<p>
+📧 E-Mail: deine-email@beispiel.de
+</p>
+
+
+<p>
+📍 Adresse: Deine Werkstatt-Adresse
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<footer>
+
+© 2026 RollerWerkstatt | Zweitakt Spezialist
+
+</footer>
+
+
+
+</body>
+</html>
