@@ -1,6 +1,14 @@
-// Automatischer Zurück-Button
-
 document.addEventListener("DOMContentLoaded", () => {
+
+    let page = window.location.pathname.split("/").pop();
+
+
+    // Auf index.html KEIN Zurück-Button
+
+    if(page === "index.html" || page === "") {
+        return;
+    }
+
 
     const button = document.createElement("button");
 
@@ -8,28 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     button.className = "back-button";
 
+
     button.onclick = () => {
+
         history.back();
+
     };
+
 
     document.body.prepend(button);
 
 
 });
-
-
-
-// Test Login / Registrierung Platzhalter
-
-function login(){
-
-    alert("Login-System wird später mit Firebase verbunden.");
-
-}
-
-
-function register(){
-
-    alert("Registrierung wird später mit Firebase verbunden.");
-
-}
