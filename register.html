@@ -1,15 +1,27 @@
 <!DOCTYPE html>
+
 <html lang="de">
+
 
 <head>
 
 <meta charset="UTF-8">
 
-<title>Konto erstellen</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+
+<title>
+Registrierung | RollerWerkstatt
+</title>
+
+
+<link rel="stylesheet"
+href="style.css">
+
 
 </head>
+
 
 
 <body>
@@ -23,35 +35,58 @@
 
 
 <h1>
-👤 Kundenkonto erstellen
+👤 Konto erstellen
 </h1>
 
 
 <p>
-Deine Daten werden später sicher in deinem Kundenkonto gespeichert.
+
+Erstelle dein Kundenkonto für Shop,
+Bestellungen und Reparaturen.
+
 </p>
+
 
 
 <br>
 
 
+
 <form id="registerForm">
 
 
-<input id="name"
-placeholder="Vor- und Nachname">
+
+<input
+
+id="name"
+
+placeholder="Vor- und Nachname"
+
+required>
 
 
 
-<input id="email"
+<input
+
+id="email"
+
 type="email"
-placeholder="E-Mail Adresse">
+
+placeholder="E-Mail"
+
+required>
 
 
 
-<input id="password"
+<input
+
+id="password"
+
 type="password"
-placeholder="Passwort">
+
+placeholder="Passwort"
+
+required>
 
 
 
@@ -61,18 +96,33 @@ Adresse
 
 
 
-<input id="street"
-placeholder="Straße + Hausnummer">
+<input
+
+id="street"
+
+placeholder="Straße + Hausnummer"
+
+required>
 
 
 
-<input id="zip"
-placeholder="PLZ">
+<input
+
+id="zip"
+
+placeholder="PLZ"
+
+required>
 
 
 
-<input id="city"
-placeholder="Ort">
+<input
+
+id="city"
+
+placeholder="Ort"
+
+required>
 
 
 
@@ -82,42 +132,68 @@ Kontakt
 
 
 
-<input id="phone"
-placeholder="Telefonnummer">
+<input
+
+id="phone"
+
+placeholder="Telefonnummer"
+
+required>
 
 
 
-<button type="submit">
+
+<button>
+
 Konto erstellen
+
 </button>
 
 
+
+
 </form>
+
 
 
 <br>
 
 
 <a href="login.html">
-Bereits registriert? Login
+
+Bereits registriert?
+
 </a>
 
 
+
 </div>
 
 
 </div>
+
+
 
 
 
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+
+
+<script src="js/firebase.js"></script>
+
+<script src="js/auth.js"></script>
 
 <script src="script.js"></script>
 
 
+
 </body>
+
 
 </html>

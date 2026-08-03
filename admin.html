@@ -6,52 +6,196 @@
 
 <meta charset="UTF-8">
 
-<title>Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Admin | RollerWerkstatt
+</title>
+
 
 <link rel="stylesheet" href="style.css">
 
+
 </head>
+
 
 
 <body>
 
 
+
+<header>
+
+
+<div class="logo">
+
+🔧 Werkstatt Verwaltung
+
+</div>
+
+
+
+<nav>
+
+
+<a href="index.html">
+
+Start
+
+</a>
+
+
+<a href="shop.html">
+
+Shop
+
+</a>
+
+
+</nav>
+
+
+
+</header>
+
+
+
+
+
 <div class="container">
+
 
 
 <div class="box">
 
 
+
 <h1>
-Werkstatt Verwaltung
+👨‍🔧 Admin Dashboard
 </h1>
 
 
-<p>
-Später:
+
+<p id="adminWelcome">
+
+Prüfe Berechtigung...
+
 </p>
 
-
-<p>
-✔ Bestellungen<br>
-✔ Kunden<br>
-✔ Artikel<br>
-✔ Reparaturstatus
-</p>
 
 
 </div>
 
 
+
+
+
+
+
+
+<div id="adminPanel" style="display:none;">
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+👥 Kunden
+</h2>
+
+
+<div id="customers">
+
+Lade Kunden...
+
 </div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+🛒 Bestellungen
+</h2>
+
+
+<div id="orders">
+
+Lade Bestellungen...
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+🔧 Reparaturen
+</h2>
+
+
+<div id="repairs">
+
+Keine Reparaturen vorhanden.
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
 
 
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
+
+
+<script src="js/firebase.js"></script>
+
+<script src="js/admin.js"></script>
+
 <script src="script.js"></script>
+
+
 
 </body>
 

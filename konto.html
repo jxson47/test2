@@ -1,38 +1,242 @@
-👤 Willkommen, Max Mustermann
+<!DOCTYPE html>
 
-Kunden-ID:
-8DF93A12
+<html lang="de">
 
-------------------------
+<head>
 
-📧 E-Mail
-max@test.de
+<meta charset="UTF-8">
 
-📞 Telefon
-012345678
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-📍 Adresse
-Musterstraße 12
-47500 Kleve
 
-------------------------
+<title>
+Mein Konto | RollerWerkstatt
+</title>
 
-Meine Bestellungen
 
-Noch keine Bestellungen.
+<link rel="stylesheet" href="style.css">
 
-------------------------
 
-Meine Reparaturaufträge
+</head>
 
-Noch keine Aufträge.
 
-------------------------
+<body>
 
-[Adresse ändern]
 
-[Telefon ändern]
 
-[Passwort ändern]
 
-[Abmelden]
+<div class="container">
+
+
+<div class="box">
+
+
+<h1>
+👤 Mein Kundenkonto
+</h1>
+
+
+
+<p id="welcome">
+
+Willkommen
+
+</p>
+
+
+
+<hr>
+
+
+
+<h3>
+Meine Daten
+</h3>
+
+
+
+<div class="account-info">
+
+
+<p>
+
+🆔 Kunden-ID:
+
+<br>
+
+<span id="customerID">
+Lädt...
+</span>
+
+</p>
+
+
+
+<br>
+
+
+
+<p>
+
+👤 Name:
+
+<br>
+
+<span id="customerName">
+Lädt...
+</span>
+
+
+</p>
+
+
+
+<br>
+
+
+
+<p>
+
+📧 E-Mail:
+
+<br>
+
+<span id="customerEmail">
+Lädt...
+</span>
+
+
+</p>
+
+
+
+
+<br>
+
+
+
+
+<p>
+
+📍 Adresse:
+
+<br>
+
+<span id="customerAddress">
+Lädt...
+</span>
+
+
+</p>
+
+
+
+
+<br>
+
+
+
+<p>
+
+📞 Telefon:
+
+<br>
+
+<span id="customerPhone">
+Lädt...
+</span>
+
+
+</p>
+
+
+</div>
+
+
+
+<br><br>
+
+
+
+<h3>
+🛒 Meine Bestellungen
+</h3>
+
+
+<div class="card">
+
+
+<p>
+
+Noch keine Bestellungen vorhanden.
+
+</p>
+
+
+</div>
+
+
+
+<br>
+
+
+
+<h3>
+🔧 Meine Reparaturen
+</h3>
+
+
+
+<div class="card">
+
+
+<p>
+
+Aktuell keine Reparaturaufträge vorhanden.
+
+</p>
+
+
+</div>
+
+
+
+<br>
+
+
+
+<button onclick="logout()">
+
+Abmelden
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+
+<script src="js/firebase.js"></script>
+
+<script src="js/konto.js"></script>
+
+<script src="script.js"></script>
+
+
+</body>
+
+
+</html>
