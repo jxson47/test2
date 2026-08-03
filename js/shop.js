@@ -3,7 +3,6 @@
 // ===============================
 
 
-
 const categoryContainer =
 document.getElementById("categoryContainer");
 
@@ -14,8 +13,6 @@ document.getElementById("subcategoryContainer");
 
 const productContainer =
 document.getElementById("productContainer");
-
-
 
 
 
@@ -36,18 +33,14 @@ return;
 }
 
 
-
 try{
 
 
 categoryContainer.innerHTML="";
 
 
-
 const snapshot =
-
 await db.collection("categories").get();
-
 
 
 
@@ -56,7 +49,6 @@ snapshot.forEach(doc=>{
 
 const category =
 doc.data();
-
 
 
 
@@ -92,40 +84,16 @@ Kategorie öffnen
 });
 
 
-
 }
 
 catch(error){
 
-
 console.log(error);
 
-
-
-categoryContainer.innerHTML = `
-
-
-<div class="card">
-
-<p>
-
-Fehler beim Laden der Kategorien.
-
-</p>
-
-</div>
-
-
-`;
-
-
-
 }
 
 
 }
-
-
 
 
 
@@ -153,16 +121,11 @@ return;
 subcategoryContainer.innerHTML="";
 
 
-
 if(productContainer){
 
 productContainer.innerHTML="";
 
 }
-
-
-
-try{
 
 
 
@@ -175,14 +138,11 @@ await db.collection("categories")
 
 
 
-
-
 snapshot.forEach(doc=>{
 
 
 const sub =
 doc.data();
-
 
 
 
@@ -211,23 +171,7 @@ ${sub.name}
 });
 
 
-
 }
-
-catch(error){
-
-
-console.log(error);
-
-
-
-}
-
-
-
-}
-
-
 
 
 
@@ -257,9 +201,7 @@ productContainer.innerHTML =
 
 
 
-
 try{
-
 
 
 const snapshot =
@@ -273,11 +215,7 @@ await db.collection("categories")
 
 
 
-
-
 productContainer.innerHTML="";
-
-
 
 
 
@@ -286,39 +224,21 @@ if(snapshot.empty){
 
 productContainer.innerHTML = `
 
-
 <div class="card">
 
-
 <h3>
-
 Keine Produkte vorhanden
-
 </h3>
-
-
-
-<p>
-
-Diese Kategorie wird noch gefüllt.
-
-</p>
-
 
 </div>
 
-
 `;
-
 
 
 return;
 
 
 }
-
-
-
 
 
 
@@ -330,13 +250,10 @@ doc.data();
 
 
 
-
-
 productContainer.innerHTML += `
 
 
 <div class="product-card">
-
 
 
 <img
@@ -371,16 +288,11 @@ ${product.price} €
 
 
 
-
 <button onclick="addToCart('${categoryID}','${subcategoryID}','${doc.id}')">
-
 
 🛒 In Warenkorb
 
-
 </button>
-
-
 
 
 </div>
@@ -393,42 +305,17 @@ ${product.price} €
 });
 
 
-
 }
 
 catch(error){
 
-
-
 console.log(error);
 
-
-
-productContainer.innerHTML = `
-
-
-<div class="card">
-
-<p>
-
-Fehler beim Laden der Produkte.
-
-</p>
-
-</div>
-
-
-`;
-
-
-
 }
 
 
 
 }
-
-
 
 
 
@@ -453,29 +340,11 @@ auth.currentUser;
 if(!user){
 
 
-
-showMessage(
-"Bitte zuerst anmelden."
-);
-
-
-
-setTimeout(()=>{
-
-
 window.location.href="login.html";
-
-
-},1500);
-
-
 
 return;
 
-
 }
-
-
 
 
 
@@ -499,17 +368,11 @@ await db.collection("categories")
 
 
 
-
 if(!productDoc.exists){
 
-
-showMessage(
-"Produkt nicht gefunden."
-);
-
+console.log("Produkt nicht gefunden");
 
 return;
-
 
 }
 
@@ -519,7 +382,6 @@ return;
 
 const product =
 productDoc.data();
-
 
 
 
@@ -536,11 +398,8 @@ db.collection("carts")
 
 
 
-
 const cartItem =
 await cartRef.get();
-
-
 
 
 
@@ -569,9 +428,7 @@ quantity: quantity + 1
 else{
 
 
-
 await cartRef.set({
-
 
 
 name:product.name,
@@ -589,7 +446,6 @@ quantity:1,
 added:new Date()
 
 
-
 });
 
 
@@ -600,15 +456,14 @@ added:new Date()
 
 
 
+// KEINE MELDUNG MEHR
 
 
-showMessage(
-"✅ Produkt wurde zum Warenkorb hinzugefügt."
-);
-
-
+if(typeof updateCartCount === "function"){
 
 updateCartCount();
+
+}
 
 
 
@@ -617,23 +472,17 @@ updateCartCount();
 catch(error){
 
 
-console.log(error);
-
-
-
-showMessage(
-"Fehler beim Hinzufügen."
+console.log(
+"Fehler beim Warenkorb:",
+error
 );
 
 
-
 }
 
 
 
 }
-
-
 
 
 

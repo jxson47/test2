@@ -116,13 +116,10 @@ document.getElementById("customerPhone").value =
 customer.phone || "";
 
 
-
 }
 
 
 }
-
-
 
 
 
@@ -143,10 +140,6 @@ auth.currentUser;
 
 
 if(!user){
-
-showMessage(
-"Bitte zuerst anmelden."
-);
 
 return;
 
@@ -183,7 +176,6 @@ phone:
 document.getElementById("customerPhone").value
 
 
-
 },{merge:true});
 
 
@@ -196,7 +188,6 @@ showMessage(
 
 
 }
-
 
 
 
@@ -221,7 +212,6 @@ await db.collection("carts")
 
 
 
-
 if(!cartContainer){
 
 return;
@@ -234,7 +224,6 @@ cartContainer.innerHTML="";
 
 
 let total = 0;
-
 
 
 
@@ -256,12 +245,10 @@ totalPrice.innerHTML =
 
 updateCartCount();
 
-
 return;
 
 
 }
-
 
 
 
@@ -277,8 +264,10 @@ doc.data();
 
 
 total +=
-Number(item.price) * Number(item.quantity);
 
+Number(item.price) *
+
+Number(item.quantity);
 
 
 
@@ -308,7 +297,6 @@ ${item.price} €
 
 
 
-
 <div class="quantity-control">
 
 
@@ -320,13 +308,11 @@ ${item.price} €
 
 
 
-
 <span class="quantity-number">
 
 ${item.quantity}
 
 </span>
-
 
 
 
@@ -344,14 +330,11 @@ ${item.quantity}
 
 
 
-
 <button class="remove-button"
 
 onclick="removeItem('${doc.id}')">
 
-
 ❌ Entfernen
-
 
 </button>
 
@@ -365,6 +348,7 @@ onclick="removeItem('${doc.id}')">
 
 
 });
+
 
 
 
@@ -384,8 +368,6 @@ updateCartCount();
 
 
 }
-
-
 
 
 
@@ -420,10 +402,8 @@ db.collection("carts")
 
 
 
-
 const itemDoc =
 await ref.get();
-
 
 
 
@@ -435,11 +415,9 @@ return;
 
 
 
-
 let quantity =
 
 itemDoc.data().quantity || 1;
-
 
 
 
@@ -448,17 +426,10 @@ quantity += amount;
 
 
 
-
 if(quantity <= 0){
 
 
 await ref.delete();
-
-
-
-showMessage(
-"Artikel wurde entfernt."
-);
 
 
 }
@@ -473,22 +444,16 @@ quantity:quantity
 });
 
 
-
 }
-
 
 
 
 await loadCart(currentUser.uid);
 
-
 updateCartCount();
 
 
-
 }
-
-
 
 
 
@@ -523,25 +488,12 @@ await db.collection("carts")
 
 
 
-
-showMessage(
-"Artikel wurde entfernt."
-);
-
-
-
-
-
 await loadCart(currentUser.uid);
-
 
 updateCartCount();
 
 
-
 }
-
-
 
 
 
@@ -560,15 +512,9 @@ async function checkout(){
 
 if(!currentUser){
 
-showMessage(
-"Bitte anmelden."
-);
-
 return;
 
 }
-
-
 
 
 
@@ -593,7 +539,6 @@ userDoc.data() || {};
 
 
 
-
 const cart =
 
 await db.collection("carts")
@@ -604,17 +549,9 @@ await db.collection("carts")
 
 
 
-
 if(cart.empty){
 
-
-showMessage(
-"Dein Warenkorb ist leer."
-);
-
-
 return;
-
 
 }
 
@@ -638,22 +575,15 @@ doc.data();
 
 
 
-
 products.push({
-
 
 name:item.name,
 
-
 price:item.price,
-
 
 quantity:item.quantity
 
-
-
 });
-
 
 
 
@@ -716,10 +646,7 @@ status:"Offen",
 created:new Date()
 
 
-
 });
-
-
 
 
 
@@ -752,9 +679,7 @@ doc.ref.delete()
 
 
 
-
 updateCartCount();
-
 
 
 
@@ -762,7 +687,6 @@ updateCartCount();
 showMessage(
 "✅ Bestellung erfolgreich abgeschickt."
 );
-
 
 
 

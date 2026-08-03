@@ -5,9 +5,14 @@
 
 let confirmCallback = null;
 
+let messageTimer = null;
+
+
+
 
 
 function showMessage(text, type="info", buttons=""){
+
 
 
 const box =
@@ -31,6 +36,8 @@ return;
 
 
 
+
+
 messageText.innerHTML = text;
 
 
@@ -43,12 +50,51 @@ messageButtons.innerHTML = buttons;
 
 
 
+
 box.className =
 "message-box show " + type;
 
 
 
+
+
+
+// alten Timer löschen
+
+if(messageTimer){
+
+clearTimeout(messageTimer);
+
 }
+
+
+
+
+
+
+// Nur normale Meldungen automatisch schließen
+
+if(type !== "warning" && buttons === ""){
+
+
+
+messageTimer = setTimeout(()=>{
+
+
+hideMessage();
+
+
+},3000);
+
+
+
+}
+
+
+
+}
+
+
 
 
 
@@ -59,6 +105,7 @@ box.className =
 function hideMessage(){
 
 
+
 const box =
 document.getElementById("messageBox");
 
@@ -66,11 +113,20 @@ document.getElementById("messageBox");
 
 if(box){
 
+
 box.className =
 "message-box";
 
+
 }
 
+
+
+if(messageTimer){
+
+clearTimeout(messageTimer);
+
+}
 
 
 confirmCallback = null;
@@ -78,6 +134,7 @@ confirmCallback = null;
 
 
 }
+
 
 
 
@@ -127,6 +184,7 @@ Bestätigen
 
 
 }
+
 
 
 
