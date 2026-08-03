@@ -11,7 +11,9 @@ document.getElementById("productContainer");
 
 const categories = {
 
+
 "Motor":[
+
 "Zylinderkits",
 "Dichtungen",
 "Kurbelwellen",
@@ -20,28 +22,36 @@ const categories = {
 "Vergaser",
 "Ansaugstutzen",
 "Membransysteme"
+
 ],
 
 
+
 "Antrieb":[
+
 "Variomatik",
 "Variomatikgewichte",
 "Keilriemen",
 "Riemenscheiben",
 "Kupplungen",
 "Kupplungsglocken"
+
 ],
 
 
+
 "Zündung":[
+
 "Lichtmaschinen",
 "Zündkerzen",
 "CDI",
 "Zündspulen"
+
 ]
 
 
 };
+
 
 
 
@@ -53,23 +63,26 @@ function loadCategories(){
 categoryContainer.innerHTML="";
 
 
-for(let category in categories){
+Object.keys(categories).forEach(category=>{
 
 
 categoryContainer.innerHTML += `
 
 
 <div class="shop-category"
+
 onclick="openCategory('${category}')">
 
 
 <h2>
+
 🔧 ${category}
+
 </h2>
 
 
 <p>
-Produkte anzeigen
+Kategorie öffnen
 </p>
 
 
@@ -78,10 +91,11 @@ Produkte anzeigen
 
 `;
 
-}
+});
 
 
 }
+
 
 
 
@@ -94,18 +108,22 @@ subcategoryContainer.innerHTML="";
 productContainer.innerHTML="";
 
 
-categories[category].forEach(item=>{
+
+categories[category].forEach(sub=>{
 
 
 subcategoryContainer.innerHTML += `
 
 
 <div class="shop-subcategory"
-onclick="loadProducts('${item}')">
+
+onclick="loadProducts('${sub}')">
 
 
 <h3>
-${item}
+
+${sub}
+
 </h3>
 
 
@@ -113,7 +131,6 @@ ${item}
 
 
 `;
-
 
 });
 
@@ -125,11 +142,12 @@ ${item}
 
 
 
+
 async function loadProducts(sub){
 
 
-productContainer.innerHTML =
-"<p>Lade Produkte...</p>";
+productContainer.innerHTML=
+"Lade Produkte...";
 
 
 
@@ -151,58 +169,59 @@ productContainer.innerHTML=`
 <div class="card">
 
 <h3>
-Keine Produkte gefunden
+Keine Produkte vorhanden
 </h3>
 
 <p>
-Diese Kategorie wird noch aufgebaut.
+Diese Kategorie wird noch gefüllt.
 </p>
 
 </div>
 
 `;
 
+
 return;
 
+
 }
+
+
 
 
 
 snapshot.forEach(doc=>{
 
 
-let p = doc.data();
+const product = doc.data();
 
 
 
 productContainer.innerHTML += `
 
 
-<div class="product-card card">
+<div class="product-card">
 
 
 <img 
-src="${p.image}"
-class="product-image">
+class="product-image"
+src="${product.image}">
+
 
 
 <h2>
-${p.name}
+${product.name}
 </h2>
 
 
-<p class="category">
-${p.category || ""}
-</p>
-
-
 <p>
-${p.description}
+${product.description}
 </p>
+
 
 
 <h3>
-${p.price} €
+${product.price} €
 </h3>
 
 
@@ -219,11 +238,11 @@ Kaufen
 `;
 
 
-
 });
 
 
 }
+
 
 
 
@@ -248,25 +267,33 @@ return;
 
 
 
-const product = await db.collection("products")
+
+const doc = await db.collection("products")
 .doc(id)
 .get();
 
 
 
+const product = doc.data();
+
+
+
+
 await db.collection("orders").add({
+
 
 customerUID:user.uid,
 
 productID:id,
 
-productName:product.data().name,
+productName:product.name,
 
-price:product.data().price,
+price:product.price,
 
 status:"Offen",
 
 created:new Date()
+
 
 });
 
@@ -274,7 +301,10 @@ created:new Date()
 
 alert("Bestellung wurde aufgenommen!");
 
+
+
 }
+
 
 
 
