@@ -152,3 +152,142 @@ window.location.href =
 
 
 }
+// =========================
+// ABMELDEN
+// =========================
+
+
+function logoutUser(){
+
+
+auth.signOut()
+
+.then(()=>{
+
+
+alert(
+"Erfolgreich abgemeldet!"
+);
+
+
+window.location.href="login.html";
+
+
+})
+
+
+.catch(error=>{
+
+
+console.log(error);
+
+
+});
+
+
+}
+
+
+
+
+// =========================
+// KONTO LÖSCHEN
+// =========================
+
+
+async function deleteAccount(){
+
+
+
+const user = auth.currentUser;
+
+
+
+if(!user){
+
+
+alert(
+"Kein Benutzer angemeldet."
+);
+
+
+return;
+
+
+}
+
+
+
+let confirmDelete = confirm(
+
+"Möchtest du dein Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+
+);
+
+
+
+if(!confirmDelete){
+
+return;
+
+}
+
+
+
+
+try {
+
+
+
+// Firestore Kundendaten löschen
+
+
+await db.collection("users")
+.doc(user.uid)
+.delete();
+
+
+
+
+// Firebase Auth Konto löschen
+
+
+await user.delete();
+
+
+
+
+alert(
+
+"Konto wurde vollständig gelöscht."
+
+);
+
+
+
+window.location.href="login.html";
+
+
+
+}
+
+
+catch(error){
+
+
+console.log(error);
+
+
+
+alert(
+
+"Fehler beim Löschen: " + error.message
+
+);
+
+
+}
+
+
+
+}

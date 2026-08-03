@@ -23,6 +23,24 @@ Mein Konto | RollerWerkstatt
 <body>
 
 
+<header>
+
+<div class="logo">
+🔧 RollerWerkstatt
+</div>
+
+
+<nav>
+
+<a href="index.html">Start</a>
+<a href="shop.html">Shop</a>
+<a href="konto.html">Konto</a>
+
+</nav>
+
+</header>
+
+
 
 
 <div class="container">
@@ -49,6 +67,7 @@ Willkommen
 
 
 
+
 <h3>
 Meine Daten
 </h3>
@@ -56,6 +75,7 @@ Meine Daten
 
 
 <div class="account-info">
+
 
 
 <p>
@@ -72,28 +92,6 @@ Lädt...
 
 
 
-<br>
-
-
-
-<p>
-
-👤 Name:
-
-<br>
-
-<span id="customerName">
-Lädt...
-</span>
-
-
-</p>
-
-
-
-<br>
-
-
 
 <p>
 
@@ -105,13 +103,26 @@ Lädt...
 Lädt...
 </span>
 
-
 </p>
 
 
 
 
+
+<p>
+
+👤 Name:
+
 <br>
+
+<input 
+id="customerName"
+class="edit-input"
+type="text"
+placeholder="Name">
+
+</p>
+
 
 
 
@@ -122,17 +133,15 @@ Lädt...
 
 <br>
 
-<span id="customerAddress">
-Lädt...
-</span>
-
+<input 
+id="customerAddress"
+class="edit-input"
+type="text"
+placeholder="Adresse">
 
 </p>
 
 
-
-
-<br>
 
 
 
@@ -142,19 +151,42 @@ Lädt...
 
 <br>
 
-<span id="customerPhone">
-Lädt...
-</span>
-
+<input 
+id="customerPhone"
+class="edit-input"
+type="text"
+placeholder="Telefon">
 
 </p>
+
+
 
 
 </div>
 
 
 
-<br><br>
+
+
+<br>
+
+
+
+<button onclick="saveAccountData()">
+
+Daten speichern
+
+</button>
+
+
+
+
+
+
+
+<hr>
+
+
 
 
 
@@ -163,7 +195,7 @@ Lädt...
 </h3>
 
 
-<div class="card">
+<div id="ordersContainer" class="card">
 
 
 <p>
@@ -177,7 +209,11 @@ Noch keine Bestellungen vorhanden.
 
 
 
+
+
 <br>
+
+
 
 
 
@@ -201,7 +237,15 @@ Aktuell keine Reparaturaufträge vorhanden.
 
 
 
+
+
+
+
 <br>
+
+
+
+<div class="account-actions">
 
 
 
@@ -213,10 +257,30 @@ Abmelden
 
 
 
+
+
+<button 
+onclick="deleteAccount()" 
+class="delete-button">
+
+Konto löschen
+
+</button>
+
+
+
+</div>
+
+
+
+
+
 </div>
 
 
 </div>
+
+
 
 
 
@@ -229,11 +293,13 @@ Abmelden
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 
+
 <script src="js/firebase.js"></script>
 
 <script src="js/konto.js"></script>
 
 <script src="script.js"></script>
+
 
 
 </body>
