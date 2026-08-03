@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>
+Warenkorb | RollerWerkstatt
+</title>
+
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+
+<body>
+
+
+<header>
+
+
+<div class="logo">
+🔧 RollerWerkstatt
+</div>
+
+
+<nav>
+
+<a href="index.html">
+Start
+</a>
+
+<a href="shop.html">
+Shop
+</a>
+
+<a href="konto.html">
+Konto
+</a>
+
+<a href="warenkorb.html">
+🛒 Warenkorb
+</a>
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+<div class="container">
+
+
+<div class="box">
+
+
+<h1>
+🛒 Mein Warenkorb
+</h1>
+
+
+
+
+<div id="cartContainer">
+
+
+<p>
+Warenkorb wird geladen...
+</p>
+
+
+</div>
+
+
+
+
+
+<hr>
+
+
+
+
+
+<h2 id="totalPrice">
+
+Gesamt: 0 €
+
+</h2>
+
+
+
+
+
+
+<h3>
+📦 Lieferdaten
+</h3>
+
+
+
+<div class="card">
+
+
+<p>
+Name:
+<br>
+<span id="customerName">
+Lädt...
+</span>
+</p>
+
+
+
+<p>
+E-Mail:
+<br>
+<span id="customerEmail">
+Lädt...
+</span>
+</p>
+
+
+
+<p>
+Adresse:
+<br>
+<span id="customerAddress">
+Lädt...
+</span>
+</p>
+
+
+
+<p>
+PLZ / Ort:
+<br>
+<span id="customerCity">
+Lädt...
+</span>
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+<button onclick="checkout()">
+
+✅ Bestellung abschicken
+
+</button>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+
+
+
+<script src="js/firebase.js"></script>
+
+
+<script src="js/warenkorb.js"></script>
+
+
+<script src="script.js"></script>
+
+
+
+
+</body>
+
+
+</html>

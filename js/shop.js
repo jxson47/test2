@@ -9,8 +9,9 @@ document.getElementById("productContainer");
 
 
 
+
 // ===============================
-// Kategorien aus Firebase laden
+// Kategorien laden
 // ===============================
 
 async function loadCategories(){
@@ -33,9 +34,7 @@ const category = doc.data();
 
 categoryContainer.innerHTML += `
 
-
 <div class="shop-category"
-
 onclick="openCategory('${doc.id}')">
 
 
@@ -51,7 +50,6 @@ Kategorie öffnen
 
 </div>
 
-
 `;
 
 
@@ -59,6 +57,7 @@ Kategorie öffnen
 
 
 }
+
 
 
 
@@ -126,12 +125,13 @@ ${sub.name}
 
 
 
+
 // ===============================
 // Produkte laden
 // ===============================
 
 
-async function loadProducts(categoryID, subcategoryID){
+async function loadProducts(categoryID,subcategoryID){
 
 
 productContainer.innerHTML =
@@ -139,8 +139,7 @@ productContainer.innerHTML =
 
 
 
-try {
-
+try{
 
 
 const snapshot =
@@ -154,20 +153,16 @@ await db.collection("categories")
 
 
 
-
 productContainer.innerHTML="";
-
 
 
 
 if(snapshot.empty){
 
 
-productContainer.innerHTML=`
-
+productContainer.innerHTML = `
 
 <div class="card">
-
 
 <h3>
 Keine Produkte vorhanden
@@ -178,19 +173,14 @@ Keine Produkte vorhanden
 Diese Kategorie wird noch gefüllt.
 </p>
 
-
 </div>
-
 
 `;
 
 
 return;
 
-
 }
-
-
 
 
 
@@ -208,10 +198,9 @@ productContainer.innerHTML += `
 <div class="product-card">
 
 
+
 <img 
-
 class="product-image"
-
 src="${product.image || ''}">
 
 
@@ -235,9 +224,11 @@ ${product.price} €
 
 
 
-<button onclick="buyProduct('${categoryID}','${subcategoryID}','${doc.id}')">
+<button onclick="addToCart('${categoryID}','${subcategoryID}','${doc.id}')">
 
-Kaufen
+
+🛒 In Warenkorb
+
 
 </button>
 
@@ -251,7 +242,6 @@ Kaufen
 
 
 });
-
 
 
 }
@@ -276,33 +266,41 @@ productContainer.innerHTML =
 
 
 
+
+
 // ===============================
-// Kaufen
+// Produkt in Warenkorb
 // ===============================
 
 
-async function buyProduct(categoryID, subcategoryID, productID){
+async function addToCart(categoryID,subcategoryID,productID){
 
 
-
-const user = auth.currentUser;
+const user =
+auth.currentUser;
 
 
 
 if(!user){
 
 
-alert("Bitte zuerst anmelden");
+alert(
+"Bitte zuerst anmelden"
+);
+
 
 location.href="login.html";
 
-return;
 
+return;
 
 }
 
 
 
+
+
+// Produkt holen
 
 
 const productDoc =
@@ -317,6 +315,20 @@ await db.collection("categories")
 
 
 
+if(!productDoc.exists){
+
+
+alert(
+"Produkt nicht gefunden"
+);
+
+
+return;
+
+
+}
+
+
 
 const product =
 productDoc.data();
@@ -324,33 +336,91 @@ productDoc.data();
 
 
 
+// prüfen ob schon im Warenkorb
 
 
-await db.collection("orders").add({
+const cartItem =
+
+await db.collection("carts")
+.doc(user.uid)
+.collection("items")
+.doc(productID)
+.get();
 
 
-customerUID:user.uid,
 
-productID:productID,
 
-productName:product.name,
 
-price:product.price,
+if(cartItem.exists){
 
-status:"Offen",
 
-created:new Date()
+// Menge erhöhen
 
+
+let menge =
+cartItem.data().quantity || 1;
+
+
+
+await db.collection("carts")
+.doc(user.uid)
+.collection("items")
+.doc(productID)
+.update({
+
+quantity: menge + 1
 
 });
 
 
 
-alert("Bestellung wurde aufgenommen!");
+}
+
+else{
+
+
+// neu hinzufügen
+
+
+await db.collection("carts")
+.doc(user.uid)
+.collection("items")
+.doc(productID)
+.set({
+
+
+name:product.name,
+
+
+price:product.price,
+
+
+image:product.image || "",
+
+
+quantity:1,
+
+
+added:new Date()
+
+
+});
+
+
+}
+
+
+
+
+
+alert(
+"Produkt wurde zum Warenkorb hinzugefügt!"
+);
 
 
 
 }
+
 
 
 
