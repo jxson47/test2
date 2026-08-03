@@ -3,10 +3,7 @@
 // ===================================
 
 
-
 let accountUser = null;
-
-
 
 
 
@@ -18,15 +15,11 @@ let accountUser = null;
 auth.onAuthStateChanged(async function(user){
 
 
-
 if(!user){
-
 
 window.location.href="login.html";
 
-
 return;
-
 
 }
 
@@ -39,14 +32,11 @@ accountUser = user;
 try{
 
 
-
 const userDoc =
 
 await db.collection("users")
 .doc(user.uid)
 .get();
-
-
 
 
 
@@ -57,10 +47,8 @@ const data = userDoc.data();
 
 
 
-
 const customerID =
 document.getElementById("customerID");
-
 
 if(customerID){
 
@@ -71,11 +59,8 @@ data.customerID || user.uid;
 
 
 
-
-
 const customerEmail =
 document.getElementById("customerEmail");
-
 
 if(customerEmail){
 
@@ -86,11 +71,8 @@ data.email || user.email;
 
 
 
-
-
 const customerName =
 document.getElementById("customerName");
-
 
 if(customerName){
 
@@ -101,26 +83,25 @@ data.name || "";
 
 
 
-
-
 const customerAddress =
 document.getElementById("customerAddress");
-
 
 if(customerAddress){
 
 customerAddress.value =
-data.address || "";
+
+(data.street || "") +
+" " +
+(data.zip || "") +
+" " +
+(data.city || "");
 
 }
 
 
 
-
-
 const customerPhone =
 document.getElementById("customerPhone");
-
 
 if(customerPhone){
 
@@ -131,21 +112,15 @@ data.phone || "";
 
 
 
-
-
 const welcome =
 document.getElementById("welcome");
 
-
 if(welcome){
 
-
 welcome.innerHTML =
-
 "Willkommen zurück, " +
 (data.name || "");
 
-
 }
 
 
@@ -153,38 +128,35 @@ welcome.innerHTML =
 }
 
 
+await loadOrders(user.uid);
 
-loadOrders(user.uid);
 
-
+if(typeof updateCartCount === "function"){
 
 updateCartCount();
 
-
-
 }
 
 
+
+}
 
 catch(error){
 
 
-console.log(error);
-
-
-
-showMessage(
-"❌ Fehler beim Laden des Kontos."
+console.log(
+"Konto Ladefehler:",
+error
 );
 
+
+// KEINE FEHLERMELDUNG MEHR AUF DER SEITE
 
 }
 
 
 
 });
-
-
 
 
 
@@ -199,21 +171,20 @@ showMessage(
 async function saveAccountData(){
 
 
-
 if(!accountUser){
-
 
 showMessage(
 "Bitte zuerst anmelden."
 );
 
-
 return;
-
 
 }
 
 
+
+const address =
+document.getElementById("customerAddress").value;
 
 
 
@@ -221,25 +192,17 @@ const data = {
 
 
 name:
-
 document.getElementById("customerName").value,
 
 
-
-address:
-
-document.getElementById("customerAddress").value,
-
+address:address,
 
 
 phone:
-
 document.getElementById("customerPhone").value,
 
 
-
 email:
-
 accountUser.email
 
 
@@ -248,18 +211,12 @@ accountUser.email
 
 
 
-
-
-
 try{
-
 
 
 await db.collection("users")
 .doc(accountUser.uid)
 .set(data,{merge:true});
-
-
 
 
 
@@ -271,13 +228,10 @@ showMessage(
 
 }
 
-
-
 catch(error){
 
 
 console.log(error);
-
 
 
 showMessage(
@@ -285,14 +239,10 @@ showMessage(
 );
 
 
-
 }
 
 
-
 }
-
-
 
 
 
@@ -308,11 +258,8 @@ showMessage(
 async function loadOrders(uid){
 
 
-
 const container =
-
 document.getElementById("ordersContainer");
-
 
 
 if(!container){
@@ -323,18 +270,12 @@ return;
 
 
 
-
-
 container.innerHTML =
-
 "Bestellungen werden geladen...";
 
 
 
-
-
 try{
-
 
 
 const snapshot =
@@ -349,20 +290,14 @@ uid
 
 
 
-
-
-container.innerHTML = "";
-
-
+container.innerHTML="";
 
 
 
 if(snapshot.empty){
 
 
-
 container.innerHTML = `
-
 
 <div class="card">
 
@@ -372,9 +307,7 @@ Noch keine Bestellungen vorhanden.
 
 </div>
 
-
 `;
-
 
 
 return;
@@ -384,34 +317,23 @@ return;
 
 
 
-
-
-
 snapshot.forEach(doc=>{
 
 
-
-const order =
-doc.data();
-
+const order = doc.data();
 
 
 let products = "";
 
 
 
-
-
 if(order.products){
-
 
 
 order.products.forEach(product=>{
 
 
-
 products += `
-
 
 <li>
 
@@ -429,19 +351,12 @@ ${product.price} €
 
 </li>
 
-
 `;
-
-
 
 });
 
 
-
 }
-
-
-
 
 
 
@@ -467,7 +382,6 @@ ${order.status || "Offen"}
 
 
 
-
 <p>
 
 <strong>Gesamt:</strong>
@@ -478,13 +392,11 @@ ${Number(order.totalPrice || 0).toFixed(2)} €
 
 
 
-
 <ul>
 
 ${products}
 
 </ul>
-
 
 
 </div>
@@ -497,45 +409,34 @@ ${products}
 });
 
 
-
 }
-
-
 
 catch(error){
 
 
-
-console.log(error);
-
+console.log(
+"Bestellungen Fehler:",
+error
+);
 
 
 container.innerHTML = `
 
-
 <div class="card">
 
 <p>
-
-Fehler beim Laden der Bestellungen.
-
+Keine Bestellungen konnten geladen werden.
 </p>
 
 </div>
 
-
 `;
 
 
-
 }
 
 
-
 }
-
-
-
 
 
 
@@ -550,11 +451,9 @@ Fehler beim Laden der Bestellungen.
 function logout(){
 
 
-
 auth.signOut()
 
 .then(()=>{
-
 
 
 showMessage(
@@ -575,26 +474,17 @@ window.location.href="login.html";
 
 })
 
+
 .catch(error=>{
 
 
 console.log(error);
 
 
-
-showMessage(
-"❌ Fehler beim Abmelden."
-);
-
-
-
 });
 
 
-
 }
-
-
 
 
 
@@ -611,7 +501,6 @@ showMessage(
 function deleteAccount(){
 
 
-
 const user =
 auth.currentUser;
 
@@ -625,7 +514,6 @@ return;
 
 
 
-
 confirmMessage(
 
 "Möchtest du dein Konto wirklich löschen?",
@@ -634,9 +522,7 @@ confirmMessage(
 async function(){
 
 
-
 try{
-
 
 
 await db.collection("users")
@@ -645,18 +531,13 @@ await db.collection("users")
 
 
 
-
 await user.delete();
-
-
 
 
 
 showMessage(
 "✅ Konto wurde gelöscht."
 );
-
-
 
 
 
@@ -670,17 +551,13 @@ window.location.href="login.html";
 
 
 
-
 }
-
 
 
 catch(error){
 
 
-
 console.log(error);
-
 
 
 showMessage(
@@ -688,17 +565,13 @@ showMessage(
 );
 
 
-
 }
 
 
-
 }
-
 
 
 );
-
 
 
 }
