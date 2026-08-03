@@ -1,40 +1,30 @@
 // ===================================
 // RollerWerkstatt Shop
+// Produkte aus Firebase laden
 // ===================================
 
 
-
 const productContainer =
+document.getElementById("productContainer");
 
-document.getElementById(
-"productContainer"
-);
-
-
-
-
-
-// Produkte laden
 
 
 async function loadProducts(){
 
 
-
-try {
-
+try{
 
 
 const snapshot =
+await db.collection("products").get();
 
-await db.collection("products")
-.get();
 
+
+productContainer.innerHTML = "";
 
 
 
 if(snapshot.empty){
-
 
 
 productContainer.innerHTML = `
@@ -42,44 +32,35 @@ productContainer.innerHTML = `
 <div class="card">
 
 <h3>
-Noch keine Artikel verfügbar
+Noch keine Produkte vorhanden
 </h3>
 
 <p>
 Der Shop wird gerade aufgebaut.
 </p>
 
-
 </div>
 
 `;
 
-
-
 return;
-
 
 }
 
 
 
 
+snapshot.forEach((doc)=>{
 
 
-snapshot.forEach(function(doc){
-
-
-
-const product =
-doc.data();
-
+const product = doc.data();
 
 
 
 productContainer.innerHTML += `
 
 
-<div class="card">
+<div class="card product-card">
 
 
 <h2>
@@ -98,24 +79,17 @@ ${product.description}
 
 
 
-<p>
+<h3>
 
-Preis:
+${product.price.toFixed(2)} €
 
-<strong>
-
-${product.price} €
-
-</strong>
-
-</p>
-
+</h3>
 
 
 
 <button onclick="buyProduct('${doc.id}')">
 
-Kaufen
+🛒 Kaufen
 
 </button>
 
@@ -128,7 +102,6 @@ Kaufen
 
 
 
-
 });
 
 
@@ -138,17 +111,21 @@ Kaufen
 catch(error){
 
 
-console.log(error);
+console.error(
+"Shop Fehler:",
+error
+);
+
+
+productContainer.innerHTML =
+
+"Fehler beim Laden der Produkte";
 
 
 }
 
 
-
 }
-
-
-
 
 
 
@@ -160,20 +137,16 @@ async function buyProduct(productID){
 
 
 
-const user =
-
-auth.currentUser;
+const user = auth.currentUser;
 
 
 
 if(!user){
 
 
-
 alert(
 "Bitte zuerst anmelden."
 );
-
 
 
 window.location.href =
@@ -187,15 +160,11 @@ return;
 
 
 
-
-
-
 const productDoc =
 
 await db.collection("products")
 .doc(productID)
 .get();
-
 
 
 
@@ -205,35 +174,28 @@ productDoc.data();
 
 
 
-
 await db.collection("orders")
 .add({
 
 
 customerUID:
-
 user.uid,
 
 
 product:
-
 product.name,
 
 
 price:
-
 product.price,
 
 
 status:
-
 "Offen",
 
 
 created:
-
-new Date()
-
+firebase.firestore.FieldValue.serverTimestamp()
 
 
 });
@@ -241,19 +203,13 @@ new Date()
 
 
 
-
 alert(
-
-"Bestellung wurde aufgenommen!"
-
+"Bestellung wurde gespeichert!"
 );
 
 
 
 }
-
-
-
 
 
 
