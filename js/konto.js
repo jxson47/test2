@@ -12,40 +12,60 @@ return;
 
 }
 
+
 const uid = user.uid;
+
 
 try{
 
-const userDoc =
-await db.collection("users")
+
+const userDoc = await db.collection("users")
 .doc(uid)
 .get();
 
+
+
 if(userDoc.exists){
 
+
 const data = userDoc.data();
+
+
 
 document.getElementById("customerID").innerHTML =
 data.customerID || uid;
 
+
+
 document.getElementById("customerEmail").innerHTML =
 data.email || user.email;
+
+
 
 document.getElementById("customerName").value =
 data.name || "";
 
+
+
 document.getElementById("customerAddress").value =
 data.address || "";
 
+
+
 document.getElementById("customerPhone").value =
 data.phone || "";
+
+
 
 document.getElementById("welcome").innerHTML =
 "Willkommen zurück, " + (data.name || "");
 
 }
 
+
 loadOrders(uid);
+
+
 
 }
 
@@ -55,7 +75,11 @@ console.log(error);
 
 }
 
+
+
 });
+
+
 
 
 
@@ -63,9 +87,12 @@ console.log(error);
 // DATEN SPEICHERN
 // ===================================
 
+
 async function saveAccountData(){
 
+
 const user = auth.currentUser;
+
 
 if(!user){
 
@@ -75,40 +102,71 @@ return;
 
 }
 
+
+
 const updateData = {
 
-name: document.getElementById("customerName").value,
 
-address: document.getElementById("customerAddress").value,
+name:
+document.getElementById("customerName").value,
 
-phone: document.getElementById("customerPhone").value,
 
-email: user.email
+address:
+document.getElementById("customerAddress").value,
+
+
+phone:
+document.getElementById("customerPhone").value,
+
+
+email:
+user.email
+
+
 
 };
 
+
+
 try{
+
 
 await db.collection("users")
 .doc(user.uid)
 .set(updateData,{merge:true});
 
-alert("Daten erfolgreich gespeichert!");
+
+
+alert(
+"Daten erfolgreich gespeichert!"
+);
+
+
 
 }
 
 catch(error){
 
+
 console.log(error);
 
+
 alert(
-"Fehler beim Speichern: " +
+"Fehler beim Speichern: "
++
 error.message
 );
 
-}
 
 }
+
+
+
+}
+
+
+
+
 
 
 
@@ -116,92 +174,162 @@ error.message
 // BESTELLUNGEN LADEN
 // ===================================
 
+
 async function loadOrders(uid){
+
+
 
 const ordersContainer =
 document.getElementById("ordersContainer");
 
-ordersContainer.innerHTML = "";
+
+
+ordersContainer.innerHTML =
+"Bestellungen werden geladen...";
+
+
 
 try{
 
+
+
 const snapshot =
+
 await db.collection("orders")
 .where("customerUID","==",uid)
-.orderBy("created","desc")
 .get();
+
+
+
+
+ordersContainer.innerHTML="";
+
+
+
 
 if(snapshot.empty){
 
+
 ordersContainer.innerHTML = `
+
 
 <div class="card">
 
 <p>
-
 Noch keine Bestellungen vorhanden.
-
 </p>
 
 </div>
 
+
 `;
+
 
 return;
 
+
 }
+
+
+
 
 snapshot.forEach(doc=>{
 
+
+
 const order = doc.data();
 
-let productsHTML = "";
+
+
+let productsHTML="";
+
+
 
 if(order.products){
 
+
+
 order.products.forEach(product=>{
 
+
 productsHTML += `
+
 
 <li>
 
 ${product.name}
 
-(${product.quantity}x)
+- Menge: ${product.quantity}
 
 - ${product.price} €
 
 </li>
 
+
 `;
+
 
 });
 
+
 }
+
+
+
+else if(order.productName){
+
+
+productsHTML += `
+
+
+<li>
+
+${order.productName}
+
+- ${order.price} €
+
+</li>
+
+
+`;
+
+
+
+}
+
+
+
 
 ordersContainer.innerHTML += `
 
+
+
 <div class="card">
 
+
 <h3>
-Bestellung
+🛒 Bestellung
 </h3>
+
 
 <p>
 
 <strong>Status:</strong>
 
-${order.status}
+${order.status || "Offen"}
 
 </p>
+
 
 <p>
 
 <strong>Gesamt:</strong>
 
-${order.totalPrice} €
+${order.totalPrice || order.price || 0} €
 
 </p>
+
+
 
 <ul>
 
@@ -209,54 +337,100 @@ ${productsHTML}
 
 </ul>
 
+
+
 </div>
+
+
 
 `;
 
+
+
 });
 
+
+
+
 }
+
+
 
 catch(error){
 
+
 console.log(error);
 
-ordersContainer.innerHTML =
-"Fehler beim Laden der Bestellungen.";
+
+ordersContainer.innerHTML = `
+
+
+<div class="card">
+
+<p>
+
+Fehler beim Laden der Bestellungen.
+
+</p>
+
+</div>
+
+
+`;
+
 
 }
 
+
+
 }
+
+
+
+
+
+
+
 // ===================================
 // ABMELDEN
 // ===================================
 
+
 function logout(){
+
+
 
 auth.signOut()
 
 .then(()=>{
 
+
 alert(
 "Erfolgreich abgemeldet!"
 );
 
+
+
 window.location.href="login.html";
+
+
 
 })
 
 .catch(error=>{
 
+
 console.log(error);
 
-alert(
-"Fehler beim Abmelden: " +
-error.message
-);
+
 
 });
 
+
+
 }
+
+
 
 
 
@@ -266,25 +440,30 @@ error.message
 // KONTO LÖSCHEN
 // ===================================
 
+
 async function deleteAccount(){
+
+
 
 const user = auth.currentUser;
 
-if(!user){
 
-alert(
-"Kein Benutzer angemeldet."
-);
+
+if(!user){
 
 return;
 
 }
 
+
+
 const confirmDelete = confirm(
 
-"Möchtest du dein Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+"Möchtest du dein Konto wirklich löschen?"
 
 );
+
+
 
 if(!confirmDelete){
 
@@ -292,43 +471,54 @@ return;
 
 }
 
+
+
+
 try{
 
-// Benutzerdaten löschen
+
+
 await db.collection("users")
 .doc(user.uid)
 .delete();
 
-// Warenkorb löschen
-const cartItems = await db.collection("carts")
-.doc(user.uid)
-.collection("items")
-.get();
 
-cartItems.forEach(doc=>{
-doc.ref.delete();
-});
 
-// Firebase Auth Konto löschen
+
 await user.delete();
 
+
+
+
 alert(
-"Dein Konto wurde erfolgreich gelöscht."
+"Konto gelöscht."
 );
 
+
+
 window.location.href="login.html";
+
+
 
 }
 
 catch(error){
 
+
 console.log(error);
 
+
+
 alert(
-"Fehler beim Löschen: " +
+"Fehler: "
++
 error.message
 );
 
+
+
 }
+
+
 
 }
