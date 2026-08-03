@@ -1,331 +1,260 @@
-// ===================================
-// Kundenkonto laden
-// ===================================
+<!DOCTYPE html>
+<html lang="de">
 
+<head>
 
-auth.onAuthStateChanged(async function(user){
+<meta charset="UTF-8">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-if(!user){
+<title>
+Mein Konto | RollerWerkstatt
+</title>
 
-window.location.href="login.html";
+<link rel="stylesheet" href="style.css">
 
-return;
+</head>
 
-}
 
+<body>
 
 
-const uid = user.uid;
+<header>
 
+<div class="logo">
+🔧 RollerWerkstatt
+</div>
 
 
-try {
+<nav>
 
+<a href="index.html">Start</a>
+<a href="shop.html">Shop</a>
+<a href="konto.html">Konto</a>
 
-const userDoc = await db.collection("users")
-.doc(uid)
-.get();
+</nav>
 
+</header>
 
 
-if(userDoc.exists){
 
 
-const data = userDoc.data();
+<div class="container">
 
 
+<div class="box">
 
-document.getElementById("customerID").innerHTML =
-data.customerID || uid;
 
+<h1>
+👤 Mein Kundenkonto
+</h1>
 
 
-document.getElementById("customerEmail").innerHTML =
-data.email || user.email;
 
+<p id="welcome">
+Willkommen
+</p>
 
 
-document.getElementById("customerName").value =
-data.name || "";
 
+<hr>
 
 
-document.getElementById("customerAddress").value =
-data.address || "";
 
 
+<h3>
+Meine Daten
+</h3>
 
-document.getElementById("customerPhone").value =
-data.phone || "";
 
 
+<div class="account-info">
 
 
-document.getElementById("welcome").innerHTML =
+<p>
+🆔 Kunden-ID:
+<br>
 
-"Willkommen zurück, " + 
-(data.name || "");
+<span id="customerID">
+Lädt...
+</span>
 
+</p>
 
 
 
-}
+<p>
+📧 E-Mail:
+<br>
 
+<span id="customerEmail">
+Lädt...
+</span>
 
+</p>
 
-}
 
-catch(error){
 
-console.log(error);
 
-}
+<p>
+👤 Name:
+<br>
 
+<input 
+id="customerName"
+type="text"
+placeholder="Name">
 
+</p>
 
-});
 
 
 
 
+<p>
+📍 Adresse:
+<br>
 
+<input 
+id="customerAddress"
+type="text"
+placeholder="Adresse">
 
+</p>
 
-// ===================================
-// DATEN SPEICHERN
-// ===================================
 
 
-async function saveAccountData(){
 
 
+<p>
+📞 Telefon:
+<br>
 
-const user = auth.currentUser;
+<input 
+id="customerPhone"
+type="text"
+placeholder="Telefon">
 
+</p>
 
 
-if(!user){
 
-alert("Nicht angemeldet");
 
-return;
+</div>
 
-}
 
 
 
+<br>
 
-const updateData = {
 
+<button onclick="saveAccountData()">
 
-name:
-document.getElementById("customerName").value,
+Daten speichern
 
+</button>
 
-address:
-document.getElementById("customerAddress").value,
 
 
-phone:
-document.getElementById("customerPhone").value
 
+<hr>
 
 
-};
 
 
+<h3>
+🛒 Meine Bestellungen
+</h3>
 
 
+<div class="card">
 
-try {
 
+<p>
 
+Noch keine Bestellungen vorhanden.
 
-await db.collection("users")
-.doc(user.uid)
-.update(updateData);
+</p>
 
 
+</div>
 
 
-alert(
-"Daten erfolgreich gespeichert!"
-);
 
 
 
+<h3>
+🔧 Meine Reparaturen
+</h3>
 
-}
 
 
+<div class="card">
 
-catch(error){
 
+<p>
 
+Aktuell keine Reparaturaufträge vorhanden.
 
-console.log(error);
+</p>
 
 
+</div>
 
-alert(
-"Fehler beim Speichern: "
-+
-error.message
-);
 
 
 
-}
+<br>
 
 
 
-}
+<div class="account-actions">
 
 
+<button onclick="logout()">
 
+Abmelden
 
+</button>
 
 
 
+<button onclick="deleteAccount()">
 
-// ===================================
-// ABMELDEN
-// ===================================
+Konto löschen
 
+</button>
 
-function logout(){
 
 
+</div>
 
-auth.signOut()
 
-.then(()=>{
 
+</div>
 
-alert(
-"Erfolgreich abgemeldet!"
-);
+</div>
 
 
 
-window.location.href="login.html";
 
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 
-})
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-.catch(error=>{
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 
-console.log(error);
 
+<script src="js/firebase.js"></script>
 
-});
+<script src="js/konto.js"></script>
 
+<script src="script.js"></script>
 
 
-}
+</body>
 
 
-
-
-
-
-
-// ===================================
-// KONTO LÖSCHEN
-// ===================================
-
-
-async function deleteAccount(){
-
-
-
-const user = auth.currentUser;
-
-
-
-if(!user){
-
-alert(
-"Kein Benutzer angemeldet"
-);
-
-return;
-
-}
-
-
-
-
-
-const confirmDelete = confirm(
-
-"Möchtest du dein Konto wirklich löschen?"
-
-);
-
-
-
-
-if(!confirmDelete){
-
-return;
-
-}
-
-
-
-
-try {
-
-
-
-await db.collection("users")
-.doc(user.uid)
-.delete();
-
-
-
-
-await user.delete();
-
-
-
-
-alert(
-"Konto wurde vollständig gelöscht."
-);
-
-
-
-window.location.href="login.html";
-
-
-
-}
-
-
-catch(error){
-
-
-console.log(error);
-
-
-
-alert(
-
-"Fehler beim Löschen: "
-+
-error.message
-
-);
-
-
-
-}
-
-
-
-}
+</html>

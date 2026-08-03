@@ -144,7 +144,7 @@ try {
 
 await db.collection("users")
 .doc(user.uid)
-.update(updateData);
+.set(updateData, {merge:true});
 
 
 
