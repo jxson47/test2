@@ -1,308 +1,331 @@
-<!DOCTYPE html>
+// ===================================
+// Kundenkonto laden
+// ===================================
 
-<html lang="de">
 
-<head>
+auth.onAuthStateChanged(async function(user){
 
-<meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+if(!user){
 
+window.location.href="login.html";
 
-<title>
-Mein Konto | RollerWerkstatt
-</title>
+return;
 
+}
 
-<link rel="stylesheet" href="style.css">
 
 
-</head>
+const uid = user.uid;
 
 
-<body>
 
+try {
 
-<header>
 
-<div class="logo">
-🔧 RollerWerkstatt
-</div>
+const userDoc = await db.collection("users")
+.doc(uid)
+.get();
 
 
-<nav>
 
-<a href="index.html">Start</a>
-<a href="shop.html">Shop</a>
-<a href="konto.html">Konto</a>
+if(userDoc.exists){
 
-</nav>
 
-</header>
+const data = userDoc.data();
 
 
 
+document.getElementById("customerID").innerHTML =
+data.customerID || uid;
 
-<div class="container">
 
 
-<div class="box">
+document.getElementById("customerEmail").innerHTML =
+data.email || user.email;
 
 
-<h1>
-👤 Mein Kundenkonto
-</h1>
 
+document.getElementById("customerName").value =
+data.name || "";
 
 
-<p id="welcome">
 
-Willkommen
+document.getElementById("customerAddress").value =
+data.address || "";
 
-</p>
 
 
+document.getElementById("customerPhone").value =
+data.phone || "";
 
-<hr>
 
 
 
+document.getElementById("welcome").innerHTML =
 
-<h3>
-Meine Daten
-</h3>
+"Willkommen zurück, " + 
+(data.name || "");
 
 
 
-<div class="account-info">
 
+}
 
 
-<p>
 
-🆔 Kunden-ID:
+}
 
-<br>
+catch(error){
 
-<span id="customerID">
-Lädt...
-</span>
+console.log(error);
 
-</p>
+}
 
 
 
+});
 
-<p>
 
-📧 E-Mail:
 
-<br>
 
-<span id="customerEmail">
-Lädt...
-</span>
 
-</p>
 
 
+// ===================================
+// DATEN SPEICHERN
+// ===================================
 
 
+async function saveAccountData(){
 
-<p>
 
-👤 Name:
 
-<br>
+const user = auth.currentUser;
 
-<input 
-id="customerName"
-class="edit-input"
-type="text"
-placeholder="Name">
 
-</p>
 
+if(!user){
 
+alert("Nicht angemeldet");
 
+return;
 
+}
 
-<p>
 
-📍 Adresse:
 
-<br>
 
-<input 
-id="customerAddress"
-class="edit-input"
-type="text"
-placeholder="Adresse">
+const updateData = {
 
-</p>
 
+name:
+document.getElementById("customerName").value,
 
 
+address:
+document.getElementById("customerAddress").value,
 
 
-<p>
+phone:
+document.getElementById("customerPhone").value
 
-📞 Telefon:
 
-<br>
 
-<input 
-id="customerPhone"
-class="edit-input"
-type="text"
-placeholder="Telefon">
+};
 
-</p>
 
 
 
 
-</div>
+try {
 
 
 
+await db.collection("users")
+.doc(user.uid)
+.update(updateData);
 
 
-<br>
 
 
+alert(
+"Daten erfolgreich gespeichert!"
+);
 
-<button onclick="saveAccountData()">
 
-Daten speichern
 
-</button>
 
+}
 
 
 
+catch(error){
 
 
 
-<hr>
+console.log(error);
 
 
 
+alert(
+"Fehler beim Speichern: "
++
+error.message
+);
 
 
-<h3>
-🛒 Meine Bestellungen
-</h3>
 
+}
 
-<div id="ordersContainer" class="card">
 
 
-<p>
+}
 
-Noch keine Bestellungen vorhanden.
 
-</p>
 
 
-</div>
 
 
 
 
+// ===================================
+// ABMELDEN
+// ===================================
 
-<br>
 
+function logout(){
 
 
 
+auth.signOut()
 
-<h3>
-🔧 Meine Reparaturen
-</h3>
+.then(()=>{
 
 
+alert(
+"Erfolgreich abgemeldet!"
+);
 
-<div class="card">
 
 
-<p>
+window.location.href="login.html";
 
-Aktuell keine Reparaturaufträge vorhanden.
 
-</p>
 
+})
 
-</div>
+.catch(error=>{
 
 
+console.log(error);
 
 
+});
 
 
 
-<br>
+}
 
 
 
-<div class="account-actions">
 
 
 
-<button onclick="logout()">
 
-Abmelden
+// ===================================
+// KONTO LÖSCHEN
+// ===================================
 
-</button>
 
+async function deleteAccount(){
 
 
 
+const user = auth.currentUser;
 
-<button 
-onclick="deleteAccount()" 
-class="delete-button">
 
-Konto löschen
 
-</button>
+if(!user){
 
+alert(
+"Kein Benutzer angemeldet"
+);
 
+return;
 
-</div>
+}
 
 
 
 
 
-</div>
+const confirmDelete = confirm(
 
+"Möchtest du dein Konto wirklich löschen?"
 
-</div>
+);
 
 
 
 
+if(!confirmDelete){
 
+return;
 
+}
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
+try {
 
 
-<script src="js/firebase.js"></script>
 
-<script src="js/konto.js"></script>
+await db.collection("users")
+.doc(user.uid)
+.delete();
 
-<script src="script.js"></script>
 
 
 
-</body>
+await user.delete();
 
 
-</html>
+
+
+alert(
+"Konto wurde vollständig gelöscht."
+);
+
+
+
+window.location.href="login.html";
+
+
+
+}
+
+
+catch(error){
+
+
+console.log(error);
+
+
+
+alert(
+
+"Fehler beim Löschen: "
++
+error.message
+
+);
+
+
+
+}
+
+
+
+}
