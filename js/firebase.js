@@ -7,7 +7,7 @@
 
 const firebaseConfig = {
 
-    apiKey: "DEIN_API_KEY",
+    apiKey: "AIzaSyC90htVTaTMSaTb9xbqpEaEL_dRZOJt-K8",
 
     authDomain:
     "webseite-roller.firebaseapp.com",
@@ -19,10 +19,10 @@ const firebaseConfig = {
     "webseite-roller.firebasestorage.app",
 
     messagingSenderId:
-    "DEINE_MESSAGING_ID",
+    "889692196344",
 
     appId:
-    "DEINE_APP_ID"
+    "1:889692196344:web:598cc494ee4c45fd221a0d"
 
 };
 
