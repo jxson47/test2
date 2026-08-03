@@ -4,208 +4,275 @@
 // ===================================
 
 
-const productContainer =
-document.getElementById("productContainer");
+const productContainer = document.getElementById("productContainer");
+
+
+// Produkte laden
+
+async function loadProducts() {
+
+
+    try {
+
+
+        const snapshot = await db
+            .collection("products")
+            .get();
 
 
 
-async function loadProducts(){
+        if (snapshot.empty) {
 
 
-try{
+            productContainer.innerHTML = `
+
+            <div class="card">
+
+                <h3>
+                Noch keine Artikel verfügbar
+                </h3>
+
+                <p>
+                Der Shop wird gerade aufgebaut.
+                </p>
+
+            </div>
+
+            `;
+
+            return;
+
+        }
 
 
-const snapshot =
-await db.collection("products").get();
+
+
+        productContainer.innerHTML = "";
 
 
 
-productContainer.innerHTML = "";
+        snapshot.forEach(function(doc) {
+
+
+            const product = doc.data();
 
 
 
-if(snapshot.empty){
+            productContainer.innerHTML += `
 
 
-productContainer.innerHTML = `
+            <div class="card product-card">
 
-<div class="card">
 
-<h3>
-Noch keine Produkte vorhanden
-</h3>
+                <img 
+                src="${product.image || 'bild-fehlt.jpg'}"
+                alt="${product.name}"
+                class="product-image"
+                >
 
-<p>
-Der Shop wird gerade aufgebaut.
-</p>
 
-</div>
 
-`;
+                <h2>
 
-return;
+                ${product.name}
+
+                </h2>
+
+
+
+                <p>
+
+                ${product.description}
+
+                </p>
+
+
+
+                <p class="category">
+
+                Kategorie:
+                ${product.category}
+
+                </p>
+
+
+
+                <h3>
+
+                ${Number(product.price).toFixed(2)} €
+
+                </h3>
+
+
+
+
+                <button onclick="buyProduct('${doc.id}')">
+
+                🛒 Kaufen
+
+                </button>
+
+
+
+            </div>
+
+
+            `;
+
+
+
+        });
+
+
+
+    }
+
+
+    catch(error) {
+
+
+        console.error(
+            "Shop Fehler:",
+            error
+        );
+
+
+        productContainer.innerHTML = `
+
+        <div class="card">
+
+        <h3>
+        Fehler beim Laden des Shops
+        </h3>
+
+        </div>
+
+        `;
+
+
+    }
+
 
 }
 
 
 
 
-snapshot.forEach((doc)=>{
 
+// ===================================
+// Bestellung speichern
+// ===================================
 
-const product = doc.data();
 
+async function buyProduct(productID) {
 
 
-productContainer.innerHTML += `
+    const user = auth.currentUser;
 
 
-<div class="card product-card">
 
+    if(!user) {
 
-<h2>
 
-${product.name}
+        alert(
+            "Bitte zuerst anmelden."
+        );
 
-</h2>
 
+        window.location.href =
+        "login.html";
 
 
-<p>
+        return;
 
-${product.description}
+    }
 
-</p>
 
 
 
-<h3>
+    try {
 
-${product.price.toFixed(2)} €
 
-</h3>
 
+        const productDoc = await db
+        .collection("products")
+        .doc(productID)
+        .get();
 
 
-<button onclick="buyProduct('${doc.id}')">
 
-🛒 Kaufen
+        const product =
+        productDoc.data();
 
-</button>
 
 
 
-</div>
 
+        await db.collection("orders")
+        .add({
 
-`;
 
 
+            customerUID:
+            user.uid,
 
-});
 
 
+            productID:
+            productID,
 
-}
 
-catch(error){
 
+            product:
+            product.name,
 
-console.error(
-"Shop Fehler:",
-error
-);
 
 
-productContainer.innerHTML =
+            price:
+            product.price,
 
-"Fehler beim Laden der Produkte";
 
 
-}
+            status:
+            "Offen",
 
 
-}
 
+            created:
+            firebase.firestore.FieldValue.serverTimestamp()
 
 
 
-// Bestellung vorbereiten
+        });
 
 
-async function buyProduct(productID){
 
 
 
-const user = auth.currentUser;
+        alert(
+        "Bestellung wurde aufgenommen!"
+        );
 
 
 
-if(!user){
+    }
 
 
-alert(
-"Bitte zuerst anmelden."
-);
+    catch(error) {
 
 
-window.location.href =
-"login.html";
+        console.error(
+            "Bestellfehler:",
+            error
+        );
 
 
-return;
+        alert(
+        "Bestellung konnte nicht gespeichert werden."
+        );
 
 
-}
-
-
-
-const productDoc =
-
-await db.collection("products")
-.doc(productID)
-.get();
-
-
-
-const product =
-productDoc.data();
-
-
-
-
-await db.collection("orders")
-.add({
-
-
-customerUID:
-user.uid,
-
-
-product:
-product.name,
-
-
-price:
-product.price,
-
-
-status:
-"Offen",
-
-
-created:
-firebase.firestore.FieldValue.serverTimestamp()
-
-
-});
-
-
-
-
-alert(
-"Bestellung wurde gespeichert!"
-);
+    }
 
 
 
@@ -213,5 +280,7 @@ alert(
 
 
 
+
+// Shop starten
 
 loadProducts();
