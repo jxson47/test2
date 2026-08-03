@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="de">
 
+
 <head>
+
 
 <meta charset="UTF-8">
 
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
 
 <title>
 Warenkorb | RollerWerkstatt
 </title>
+
 
 
 <link rel="stylesheet" href="style.css">
@@ -18,37 +24,68 @@ Warenkorb | RollerWerkstatt
 </head>
 
 
+
+
 <body>
+
+
+
 
 
 <header>
 
 
+
+
 <div class="logo">
+
 🔧 RollerWerkstatt
+
 </div>
 
 
+
+
+
+
 <nav>
+
+
 
 <a href="index.html">
 Start
 </a>
 
+
+
 <a href="shop.html">
 Shop
 </a>
+
+
 
 <a href="konto.html">
 Konto
 </a>
 
+
+
+
 <a href="warenkorb.html">
+
 🛒 Warenkorb
+
+<span id="cartCount">
+0
+</span>
+
 </a>
 
 
+
 </nav>
+
+
 
 
 </header>
@@ -57,15 +94,63 @@ Konto
 
 
 
+
+
+
+<!-- Nachricht Fenster -->
+
+
+<div id="messageBox" class="message-box">
+
+
+
+<div class="message-content">
+
+
+
+<p id="messageText">
+</p>
+
+
+
+<div id="messageButtons">
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
 <div class="container">
+
+
+
 
 
 <div class="box">
 
 
+
+
+
 <h1>
 🛒 Mein Warenkorb
 </h1>
+
+
+
+
 
 
 
@@ -84,7 +169,15 @@ Warenkorb wird geladen...
 
 
 
+
+
+
+
 <hr>
+
+
+
+
 
 
 
@@ -102,89 +195,197 @@ Gesamt: 0 €
 
 
 
+
+
 <h3>
+
 📦 Lieferdaten
+
 </h3>
+
+
+
+
+
+
 
 
 <div class="card">
 
 
+
+
+
+
+
 <p>
+
 Name:
+
 <br>
-<input 
+
+
+
+<input
+
 id="customerName"
+
 type="text"
+
 placeholder="Name">
+
+
+
 </p>
 
 
 
+
+
+
+
 <p>
+
 E-Mail:
+
 <br>
-<input 
+
+
+
+<input
+
 id="customerEmail"
+
 type="email"
+
 placeholder="E-Mail">
+
+
+
 </p>
 
 
 
 
+
+
+
 <p>
+
 Straße:
+
 <br>
-<input 
+
+
+
+<input
+
 id="customerStreet"
+
 type="text"
+
 placeholder="Straße">
+
+
+
 </p>
 
 
 
 
+
+
+
 <p>
+
 PLZ:
+
 <br>
-<input 
+
+
+
+<input
+
 id="customerZip"
+
 type="text"
+
 placeholder="Postleitzahl">
+
+
+
 </p>
 
 
 
 
+
+
+
 <p>
+
 Ort:
+
 <br>
-<input 
+
+
+
+<input
+
 id="customerCity"
+
 type="text"
+
 placeholder="Ort">
+
+
+
 </p>
+
+
+
 
 
 
 
 <p>
+
 Telefon:
+
 <br>
-<input 
+
+
+
+<input
+
 id="customerPhone"
+
 type="text"
+
 placeholder="Telefon">
+
+
+
 </p>
+
+
+
+
+
 
 
 
 <button onclick="saveDeliveryData()">
 
+
 💾 Lieferdaten speichern
 
+
 </button>
+
+
+
+
 
 
 </div>
@@ -195,7 +396,13 @@ placeholder="Telefon">
 
 
 
+
+
 <br>
+
+
+
+
 
 
 
@@ -203,7 +410,9 @@ placeholder="Telefon">
 
 <button onclick="checkout()">
 
+
 ✅ Bestellung abschicken
+
 
 </button>
 
@@ -211,10 +420,21 @@ placeholder="Telefon">
 
 
 
-</div>
+
+
 
 
 </div>
+
+
+
+
+</div>
+
+
+
+
+
 
 
 
@@ -226,9 +446,15 @@ placeholder="Telefon">
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+
+
+
 
 
 
@@ -236,10 +462,20 @@ placeholder="Telefon">
 <script src="js/firebase.js"></script>
 
 
+<script src="js/message.js"></script>
+
+
+<script src="js/cart.js"></script>
+
+
 <script src="js/warenkorb.js"></script>
 
 
 <script src="script.js"></script>
+
+
+
+
 
 
 

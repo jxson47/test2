@@ -1,5 +1,11 @@
+// ===============================
+// WARENKORB SYSTEM
+// ===============================
+
+
 const cartContainer =
 document.getElementById("cartContainer");
+
 
 const totalPrice =
 document.getElementById("totalPrice");
@@ -8,9 +14,13 @@ document.getElementById("totalPrice");
 let currentUser = null;
 
 
+
+
+
 // ===============================
-// LOGIN PRÜFEN
+// LOGIN
 // ===============================
+
 
 auth.onAuthStateChanged(async function(user){
 
@@ -31,8 +41,13 @@ await loadCustomerData(user.uid);
 
 await loadCart(user.uid);
 
+updateCartCount();
+
 
 });
+
+
+
 
 
 
@@ -41,10 +56,8 @@ await loadCart(user.uid);
 // LIEFERDATEN LADEN
 // ===============================
 
+
 async function loadCustomerData(uid){
-
-
-try{
 
 
 const userDoc =
@@ -57,29 +70,47 @@ await db.collection("users")
 if(userDoc.exists){
 
 
-const customer = userDoc.data();
+const customer =
+userDoc.data();
 
 
+
+if(document.getElementById("customerName"))
 
 document.getElementById("customerName").value =
 customer.name || "";
 
 
+
+if(document.getElementById("customerEmail"))
+
 document.getElementById("customerEmail").value =
 customer.email || "";
 
+
+
+if(document.getElementById("customerStreet"))
 
 document.getElementById("customerStreet").value =
 customer.street || "";
 
 
+
+if(document.getElementById("customerZip"))
+
 document.getElementById("customerZip").value =
 customer.zip || "";
 
 
+
+if(document.getElementById("customerCity"))
+
 document.getElementById("customerCity").value =
 customer.city || "";
 
+
+
+if(document.getElementById("customerPhone"))
 
 document.getElementById("customerPhone").value =
 customer.phone || "";
@@ -91,15 +122,9 @@ customer.phone || "";
 
 }
 
-catch(error){
-
-console.log(error);
-
-}
 
 
 
-}
 
 
 
@@ -108,15 +133,20 @@ console.log(error);
 // LIEFERDATEN SPEICHERN
 // ===============================
 
+
 async function saveDeliveryData(){
 
 
-const user = auth.currentUser;
+const user =
+auth.currentUser;
+
 
 
 if(!user){
 
-alert("Nicht angemeldet");
+showMessage(
+"Bitte zuerst anmelden."
+);
 
 return;
 
@@ -158,13 +188,18 @@ document.getElementById("customerPhone").value
 
 
 
-alert(
-"Lieferdaten gespeichert!"
+
+showMessage(
+"✅ Lieferdaten wurden gespeichert."
 );
 
 
 
 }
+
+
+
+
 
 
 
@@ -177,10 +212,21 @@ alert(
 async function loadCart(uid){
 
 
-const snapshot = await db.collection("carts")
+const snapshot =
+
+await db.collection("carts")
 .doc(uid)
 .collection("items")
 .get();
+
+
+
+
+if(!cartContainer){
+
+return;
+
+}
 
 
 
@@ -191,15 +237,24 @@ let total = 0;
 
 
 
+
+
 if(snapshot.empty){
 
 
 cartContainer.innerHTML =
-"<p>Warenkorb ist leer.</p>";
+"<p>Dein Warenkorb ist leer.</p>";
 
+
+
+if(totalPrice)
 
 totalPrice.innerHTML =
 "Gesamt: 0 €";
+
+
+
+updateCartCount();
 
 
 return;
@@ -211,13 +266,20 @@ return;
 
 
 
+
+
 snapshot.forEach(doc=>{
 
 
-const item = doc.data();
+const item =
+doc.data();
 
 
-total += item.price * item.quantity;
+
+total +=
+Number(item.price) * Number(item.quantity);
+
+
 
 
 
@@ -228,46 +290,71 @@ cartContainer.innerHTML += `
 
 
 <h3>
+
 ${item.name}
+
 </h3>
 
 
+
 <p>
+
 Preis:
+
 ${item.price} €
+
 </p>
 
 
 
-<p>
-Menge:
-</p>
+
+
+<div class="quantity-control">
 
 
 <button onclick="changeQuantity('${doc.id}',-1)">
-➖
+
+−
+
 </button>
 
 
-<strong>
+
+
+<span class="quantity-number">
+
 ${item.quantity}
-</strong>
+
+</span>
+
+
+
 
 
 <button onclick="changeQuantity('${doc.id}',1)">
-➕
+
++
+
 </button>
 
 
 
-<br><br>
+</div>
 
 
-<button onclick="removeItem('${doc.id}')">
+
+
+
+<button class="remove-button"
+
+onclick="removeItem('${doc.id}')">
+
 
 ❌ Entfernen
 
+
 </button>
+
 
 
 </div>
@@ -282,12 +369,26 @@ ${item.quantity}
 
 
 
+
+if(totalPrice)
+
 totalPrice.innerHTML =
+
 "Gesamt: " + total.toFixed(2) + " €";
 
 
 
+
+updateCartCount();
+
+
+
 }
+
+
+
+
+
 
 
 
@@ -301,11 +402,22 @@ async function changeQuantity(id, amount){
 
 
 
+if(!currentUser){
+
+return;
+
+}
+
+
+
 const ref =
+
 db.collection("carts")
 .doc(currentUser.uid)
 .collection("items")
 .doc(id);
+
+
 
 
 
@@ -314,8 +426,20 @@ await ref.get();
 
 
 
+
+if(!itemDoc.exists){
+
+return;
+
+}
+
+
+
+
 let quantity =
-itemDoc.data().quantity;
+
+itemDoc.data().quantity || 1;
+
 
 
 
@@ -323,10 +447,18 @@ quantity += amount;
 
 
 
+
+
 if(quantity <= 0){
 
 
 await ref.delete();
+
+
+
+showMessage(
+"Artikel wurde entfernt."
+);
 
 
 }
@@ -341,26 +473,44 @@ quantity:quantity
 });
 
 
+
+}
+
+
+
+
+await loadCart(currentUser.uid);
+
+
+updateCartCount();
+
+
+
 }
 
 
 
-loadCart(currentUser.uid);
 
-
-
-}
 
 
 
 
 
 // ===============================
-// PRODUKT ENTFERNEN
+// ARTIKEL ENTFERNEN
 // ===============================
 
 
 async function removeItem(id){
+
+
+
+if(!currentUser){
+
+return;
+
+}
+
 
 
 
@@ -372,7 +522,20 @@ await db.collection("carts")
 
 
 
-loadCart(currentUser.uid);
+
+
+showMessage(
+"Artikel wurde entfernt."
+);
+
+
+
+
+
+await loadCart(currentUser.uid);
+
+
+updateCartCount();
 
 
 
@@ -381,8 +544,13 @@ loadCart(currentUser.uid);
 
 
 
+
+
+
+
+
 // ===============================
-// BESTELLUNG ABSCHICKEN
+// BESTELLUNG
 // ===============================
 
 
@@ -390,28 +558,66 @@ async function checkout(){
 
 
 
+if(!currentUser){
+
+showMessage(
+"Bitte anmelden."
+);
+
+return;
+
+}
+
+
+
+
+
 await saveDeliveryData();
 
 
 
+
+
 const userDoc =
+
 await db.collection("users")
 .doc(currentUser.uid)
 .get();
 
 
 
+
 const customer =
-userDoc.data();
+userDoc.data() || {};
+
 
 
 
 
 const cart =
+
 await db.collection("carts")
 .doc(currentUser.uid)
 .collection("items")
 .get();
+
+
+
+
+
+if(cart.empty){
+
+
+showMessage(
+"Dein Warenkorb ist leer."
+);
+
+
+return;
+
+
+}
+
 
 
 
@@ -422,30 +628,45 @@ let total=0;
 
 
 
+
+
 cart.forEach(doc=>{
 
 
-const item = doc.data();
+const item =
+doc.data();
+
 
 
 
 products.push({
 
+
 name:item.name,
+
 
 price:item.price,
 
+
 quantity:item.quantity
 
-});
-
-
-
-total += item.price * item.quantity;
-
 
 
 });
+
+
+
+
+total +=
+
+Number(item.price) *
+
+Number(item.quantity);
+
+
+
+});
+
 
 
 
@@ -453,7 +674,6 @@ total += item.price * item.quantity;
 
 
 await db.collection("orders").add({
-
 
 
 customerUID:
@@ -504,7 +724,11 @@ created:new Date()
 
 
 
+
+
+
 const items =
+
 await db.collection("carts")
 .doc(currentUser.uid)
 .collection("items")
@@ -512,22 +736,43 @@ await db.collection("carts")
 
 
 
-items.forEach(doc=>{
-
-doc.ref.delete();
-
-});
 
 
+await Promise.all(
 
+items.docs.map(doc=>
 
-alert(
-"Bestellung erfolgreich abgeschickt!"
+doc.ref.delete()
+
+)
+
 );
 
 
 
+
+
+
+updateCartCount();
+
+
+
+
+
+showMessage(
+"✅ Bestellung erfolgreich abgeschickt."
+);
+
+
+
+
+setTimeout(()=>{
+
+
 window.location.href="konto.html";
+
+
+},1200);
 
 
 

@@ -1,10 +1,12 @@
 // ===================================
+// AUTH SYSTEM
 // Registrierung & Login
 // ===================================
 
 
-
-// Registrierung
+// ===================================
+// REGISTRIERUNG
+// ===================================
 
 
 const registerForm =
@@ -53,8 +55,7 @@ document.getElementById("phone").value;
 
 
 
-try {
-
+try{
 
 
 const userCredential =
@@ -71,65 +72,84 @@ userCredential.user.uid;
 
 
 
-
-// Kundendaten speichern
-
-
 await db.collection("users")
 .doc(uid)
 .set({
 
-
 customerID:
-
-"RW-" +
-Date.now(),
-
+"RW-" + Date.now(),
 
 name:name,
 
-
 email:email,
-
 
 street:street,
 
-
 zip:zip,
-
 
 city:city,
 
-
 phone:phone,
-
 
 role:"customer",
 
-
-created:
-new Date()
-
-
+created:new Date()
 
 });
 
 
 
-alert(
-"Konto erfolgreich erstellt!"
+
+if(typeof showMessage === "function"){
+
+
+showMessage(
+"✅ Konto erfolgreich erstellt."
 );
 
+
+}
+else{
+
+
+alert(
+"Konto erfolgreich erstellt."
+);
+
+
+}
+
+
+
+
+setTimeout(()=>{
 
 
 window.location.href =
 "konto.html";
 
 
+},1200);
+
+
 
 }
 
+
+
 catch(error){
+
+
+if(typeof showMessage === "function"){
+
+
+showMessage(
+"❌ " + error.message
+);
+
+
+}
+else{
 
 
 alert(error.message);
@@ -139,6 +159,10 @@ alert(error.message);
 
 
 
+}
+
+
+
 });
 
 
@@ -149,7 +173,12 @@ alert(error.message);
 
 
 
-// Login
+
+
+
+// ===================================
+// LOGIN
+// ===================================
 
 
 const loginForm =
@@ -158,6 +187,7 @@ document.getElementById("loginForm");
 
 
 if(loginForm){
+
 
 
 loginForm.addEventListener(
@@ -190,17 +220,66 @@ password
 
 
 
+
+if(typeof showMessage === "function"){
+
+
+showMessage(
+"✅ Erfolgreich angemeldet."
+);
+
+
+}
+else{
+
+
+alert(
+"Erfolgreich angemeldet."
+);
+
+
+}
+
+
+
+
+
+setTimeout(()=>{
+
+
 window.location.href =
 "konto.html";
+
+
+},1000);
+
 
 
 
 }
 
+
+
 catch(error){
 
 
+if(typeof showMessage === "function"){
+
+
+showMessage(
+"❌ " + error.message
+);
+
+
+}
+else{
+
+
 alert(error.message);
+
+
+}
+
 
 
 }

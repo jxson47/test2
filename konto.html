@@ -28,14 +28,62 @@ Mein Konto | RollerWerkstatt
 
 <nav>
 
-<a href="index.html">Start</a>
-<a href="shop.html">Shop</a>
-<a href="konto.html">Konto</a>
-<a href="warenkorb.html">🛒 Warenkorb</a>
+<a href="index.html">
+Start
+</a>
+
+<a href="shop.html">
+Shop
+</a>
+
+<a href="konto.html">
+Konto
+</a>
+
+<a href="warenkorb.html">
+
+🛒 Warenkorb
+
+<span id="cartCount">
+0
+</span>
+
+</a>
+
 
 </nav>
 
+
 </header>
+
+
+
+
+
+<!-- Nachricht Fenster -->
+
+<div id="messageBox" class="message-box">
+
+
+<div class="message-content">
+
+
+<p id="messageText">
+
+</p>
+
+
+<div id="messageButtons">
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
 
 
 
@@ -63,6 +111,7 @@ Willkommen
 
 
 
+
 <h3>
 Meine Daten
 </h3>
@@ -72,69 +121,112 @@ Meine Daten
 <div class="account-info">
 
 
+
 <p>
+
 🆔 Kunden-ID:
+
 <br>
+
 
 <span id="customerID">
+
 Lädt...
+
 </span>
+
 
 </p>
 
 
 
+
+
 <p>
+
 📧 E-Mail:
+
 <br>
+
 
 <span id="customerEmail">
+
 Lädt...
+
 </span>
 
+
 </p>
 
 
 
 
+
+
+
 <p>
+
 👤 Name:
+
 <br>
 
-<input 
+
+<input
+
 id="customerName"
+
 type="text"
+
 placeholder="Name">
 
+
 </p>
 
 
 
 
 
+
+
 <p>
+
 📍 Adresse:
+
 <br>
 
-<input 
+
+<input
+
 id="customerAddress"
+
 type="text"
+
 placeholder="Adresse">
 
+
 </p>
 
 
 
 
 
+
+
 <p>
+
 📞 Telefon:
+
 <br>
 
-<input 
+
+<input
+
 id="customerPhone"
+
 type="text"
+
 placeholder="Telefon">
+
 
 </p>
 
@@ -146,14 +238,21 @@ placeholder="Telefon">
 
 
 
+
 <br>
+
+
+
 
 
 <button onclick="saveAccountData()">
 
-Daten speichern
+💾 Daten speichern
 
 </button>
+
+
+
 
 
 
@@ -170,9 +269,11 @@ Daten speichern
 🛒 Meine Bestellungen
 </h3>
 
-<br>
+
+
 
 <div id="ordersContainer">
+
 
 <p>
 
@@ -180,19 +281,36 @@ Bestellungen werden geladen...
 
 </p>
 
+
 </div>
+
+
+
+
+
+
 
 <h3>
 🔧 Meine Reparaturen
 </h3>
 
+
+
 <div class="card">
 
+
 <p>
+
 Aktuell keine Reparaturaufträge vorhanden.
+
 </p>
 
+
 </div>
+
+
+
+
 
 
 
@@ -200,7 +318,12 @@ Aktuell keine Reparaturaufträge vorhanden.
 
 
 
+
+
 <div class="account-actions">
+
+
+
 
 
 <button onclick="logout()">
@@ -208,6 +331,8 @@ Aktuell keine Reparaturaufträge vorhanden.
 Abmelden
 
 </button>
+
+
 
 
 
@@ -219,13 +344,22 @@ Konto löschen
 
 
 
+
+
 </div>
 
 
 
+
+
+
 </div>
 
 </div>
+
+
+
+
 
 
 
@@ -239,11 +373,16 @@ Konto löschen
 
 
 
+
+
 <script src="js/firebase.js"></script>
+
+<script src="js/message.js"></script>
 
 <script src="js/konto.js"></script>
 
 <script src="script.js"></script>
+
 
 
 </body>

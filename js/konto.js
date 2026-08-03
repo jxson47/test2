@@ -1,27 +1,52 @@
 // ===================================
-// Kundenkonto laden
+// KUNDENKONTO SYSTEM
 // ===================================
+
+
+
+let accountUser = null;
+
+
+
+
+
+// ===================================
+// LOGIN PRÜFEN
+// ===================================
+
 
 auth.onAuthStateChanged(async function(user){
 
+
+
 if(!user){
+
 
 window.location.href="login.html";
 
+
 return;
+
 
 }
 
 
-const uid = user.uid;
+
+accountUser = user;
+
 
 
 try{
 
 
-const userDoc = await db.collection("users")
-.doc(uid)
+
+const userDoc =
+
+await db.collection("users")
+.doc(user.uid)
 .get();
+
+
 
 
 
@@ -32,52 +57,135 @@ const data = userDoc.data();
 
 
 
-document.getElementById("customerID").innerHTML =
-data.customerID || uid;
+
+const customerID =
+document.getElementById("customerID");
+
+
+if(customerID){
+
+customerID.innerHTML =
+data.customerID || user.uid;
+
+}
 
 
 
-document.getElementById("customerEmail").innerHTML =
+
+
+const customerEmail =
+document.getElementById("customerEmail");
+
+
+if(customerEmail){
+
+customerEmail.innerHTML =
 data.email || user.email;
 
+}
 
 
-document.getElementById("customerName").value =
+
+
+
+const customerName =
+document.getElementById("customerName");
+
+
+if(customerName){
+
+customerName.value =
 data.name || "";
 
+}
 
 
-document.getElementById("customerAddress").value =
+
+
+
+const customerAddress =
+document.getElementById("customerAddress");
+
+
+if(customerAddress){
+
+customerAddress.value =
 data.address || "";
 
+}
 
 
-document.getElementById("customerPhone").value =
+
+
+
+const customerPhone =
+document.getElementById("customerPhone");
+
+
+if(customerPhone){
+
+customerPhone.value =
 data.phone || "";
 
+}
 
 
-document.getElementById("welcome").innerHTML =
-"Willkommen zurück, " + (data.name || "");
+
+
+
+const welcome =
+document.getElementById("welcome");
+
+
+if(welcome){
+
+
+welcome.innerHTML =
+
+"Willkommen zurück, " +
+(data.name || "");
+
 
 }
 
 
-loadOrders(uid);
+
+}
+
+
+
+loadOrders(user.uid);
+
+
+
+updateCartCount();
 
 
 
 }
+
+
 
 catch(error){
 
+
 console.log(error);
+
+
+
+showMessage(
+"❌ Fehler beim Laden des Kontos."
+);
+
 
 }
 
 
 
 });
+
+
+
 
 
 
@@ -91,36 +199,48 @@ console.log(error);
 async function saveAccountData(){
 
 
-const user = auth.currentUser;
+
+if(!accountUser){
 
 
-if(!user){
+showMessage(
+"Bitte zuerst anmelden."
+);
 
-alert("Nicht angemeldet");
 
 return;
+
 
 }
 
 
 
-const updateData = {
+
+
+const data = {
 
 
 name:
+
 document.getElementById("customerName").value,
 
 
+
 address:
+
 document.getElementById("customerAddress").value,
 
 
+
 phone:
+
 document.getElementById("customerPhone").value,
 
 
+
 email:
-user.email
+
+accountUser.email
 
 
 
@@ -128,22 +248,30 @@ user.email
 
 
 
+
+
+
 try{
 
 
+
 await db.collection("users")
-.doc(user.uid)
-.set(updateData,{merge:true});
+.doc(accountUser.uid)
+.set(data,{merge:true});
 
 
 
-alert(
-"Daten erfolgreich gespeichert!"
+
+
+showMessage(
+"✅ Daten erfolgreich gespeichert."
 );
 
 
 
 }
+
+
 
 catch(error){
 
@@ -151,18 +279,20 @@ catch(error){
 console.log(error);
 
 
-alert(
-"Fehler beim Speichern: "
-+
-error.message
+
+showMessage(
+"❌ Fehler beim Speichern."
 );
 
 
+
+}
+
+
+
 }
 
 
-
-}
 
 
 
@@ -179,13 +309,27 @@ async function loadOrders(uid){
 
 
 
-const ordersContainer =
+const container =
+
 document.getElementById("ordersContainer");
 
 
 
-ordersContainer.innerHTML =
+if(!container){
+
+return;
+
+}
+
+
+
+
+
+container.innerHTML =
+
 "Bestellungen werden geladen...";
+
+
 
 
 
@@ -196,13 +340,19 @@ try{
 const snapshot =
 
 await db.collection("orders")
-.where("customerUID","==",uid)
+.where(
+"customerUID",
+"==",
+uid
+)
 .get();
 
 
 
 
-ordersContainer.innerHTML="";
+
+container.innerHTML = "";
+
 
 
 
@@ -210,7 +360,8 @@ ordersContainer.innerHTML="";
 if(snapshot.empty){
 
 
-ordersContainer.innerHTML = `
+
+container.innerHTML = `
 
 
 <div class="card">
@@ -225,6 +376,7 @@ Noch keine Bestellungen vorhanden.
 `;
 
 
+
 return;
 
 
@@ -233,15 +385,20 @@ return;
 
 
 
+
+
 snapshot.forEach(doc=>{
 
 
 
-const order = doc.data();
+const order =
+doc.data();
 
 
 
-let productsHTML="";
+let products = "";
+
+
 
 
 
@@ -252,56 +409,43 @@ if(order.products){
 order.products.forEach(product=>{
 
 
-productsHTML += `
+
+products += `
 
 
 <li>
 
 ${product.name}
 
-- Menge: ${product.quantity}
+<br>
 
-- ${product.price} €
+Menge:
+${product.quantity}
+
+<br>
+
+Preis:
+${product.price} €
 
 </li>
 
 
 `;
+
 
 
 });
 
 
-}
-
-
-
-else if(order.productName){
-
-
-productsHTML += `
-
-
-<li>
-
-${order.productName}
-
-- ${order.price} €
-
-</li>
-
-
-`;
-
-
 
 }
 
 
 
 
-ordersContainer.innerHTML += `
 
+
+container.innerHTML += `
 
 
 <div class="card">
@@ -310,6 +454,7 @@ ordersContainer.innerHTML += `
 <h3>
 🛒 Bestellung
 </h3>
+
 
 
 <p>
@@ -321,26 +466,28 @@ ${order.status || "Offen"}
 </p>
 
 
+
+
 <p>
 
 <strong>Gesamt:</strong>
 
-${order.totalPrice || order.price || 0} €
+${Number(order.totalPrice || 0).toFixed(2)} €
 
 </p>
 
 
 
+
 <ul>
 
-${productsHTML}
+${products}
 
 </ul>
 
 
 
 </div>
-
 
 
 `;
@@ -351,7 +498,6 @@ ${productsHTML}
 
 
 
-
 }
 
 
@@ -359,10 +505,12 @@ ${productsHTML}
 catch(error){
 
 
+
 console.log(error);
 
 
-ordersContainer.innerHTML = `
+
+container.innerHTML = `
 
 
 <div class="card">
@@ -379,11 +527,14 @@ Fehler beim Laden der Bestellungen.
 `;
 
 
+
+}
+
+
+
 }
 
 
-
-}
 
 
 
@@ -405,13 +556,20 @@ auth.signOut()
 .then(()=>{
 
 
-alert(
-"Erfolgreich abgemeldet!"
+
+showMessage(
+"✅ Erfolgreich abgemeldet."
 );
 
 
 
+setTimeout(()=>{
+
+
 window.location.href="login.html";
+
+
+},1200);
 
 
 
@@ -421,6 +579,12 @@ window.location.href="login.html";
 
 
 console.log(error);
+
+
+
+showMessage(
+"❌ Fehler beim Abmelden."
+);
 
 
 
@@ -436,16 +600,20 @@ console.log(error);
 
 
 
+
+
+
 // ===================================
 // KONTO LÖSCHEN
 // ===================================
 
 
-async function deleteAccount(){
+function deleteAccount(){
 
 
 
-const user = auth.currentUser;
+const user =
+auth.currentUser;
 
 
 
@@ -457,20 +625,13 @@ return;
 
 
 
-const confirmDelete = confirm(
 
-"Möchtest du dein Konto wirklich löschen?"
+confirmMessage(
 
-);
-
+"Möchtest du dein Konto wirklich löschen?",
 
 
-if(!confirmDelete){
-
-return;
-
-}
-
+async function(){
 
 
 
@@ -490,34 +651,53 @@ await user.delete();
 
 
 
-alert(
-"Konto gelöscht."
+
+showMessage(
+"✅ Konto wurde gelöscht."
 );
 
+
+
+
+
+setTimeout(()=>{
 
 
 window.location.href="login.html";
 
 
+},1200);
+
+
+
 
 }
 
+
+
 catch(error){
+
 
 
 console.log(error);
 
 
 
-alert(
-"Fehler: "
-+
-error.message
+showMessage(
+"❌ Konto konnte nicht gelöscht werden."
 );
 
 
 
 }
+
+
+
+}
+
+
+
+);
 
 
 

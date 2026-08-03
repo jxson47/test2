@@ -1,55 +1,42 @@
 // ===================================
-// Admin Bereich
+// ADMIN BEREICH
 // ===================================
 
 
+// ===============================
+// ADMIN PRÜFEN
+// ===============================
 
 auth.onAuthStateChanged(async function(user){
 
 
-
 if(!user){
 
-
-window.location.href =
-"login.html";
-
+window.location.href="login.html";
 
 return;
-
 
 }
 
 
 
-
-
-const uid = user.uid;
-
-
+try{
 
 
 const userDoc =
-
 await db.collection("users")
-.doc(uid)
+.doc(user.uid)
 .get();
-
 
 
 
 if(!userDoc.exists){
 
-
-window.location.href =
-"index.html";
-
+window.location.href="index.html";
 
 return;
 
-
 }
-
 
 
 
@@ -58,23 +45,19 @@ userDoc.data();
 
 
 
-
-
-// Admin Prüfung
-
-
 if(userData.role !== "admin"){
 
 
-
-alert(
-"Keine Berechtigung!"
+showMessage(
+"❌ Keine Berechtigung!"
 );
 
 
+setTimeout(()=>{
 
-window.location.href =
-"index.html";
+window.location.href="index.html";
+
+},1200);
 
 
 return;
@@ -85,28 +68,30 @@ return;
 
 
 
+const welcome =
+document.getElementById("adminWelcome");
+
+
+const panel =
+document.getElementById("adminPanel");
 
 
 
-document.getElementById(
-"adminWelcome"
-).innerHTML =
+if(welcome){
 
-
+welcome.innerHTML =
 "Willkommen Admin " +
-userData.name;
+(userData.name || "");
+
+}
 
 
 
+if(panel){
 
+panel.style.display="block";
 
-document.getElementById(
-"adminPanel"
-).style.display =
-"block";
-
-
-
+}
 
 
 
@@ -116,7 +101,13 @@ loadOrders();
 
 
 
+}
 
+catch(error){
+
+console.log(error);
+
+}
 
 
 
@@ -128,36 +119,33 @@ loadOrders();
 
 
 
-
 // ===================================
-// Kunden laden
+// KUNDEN LADEN
 // ===================================
 
 
 async function loadCustomers(){
 
 
-
 const box =
+document.getElementById("customers");
 
-document.getElementById(
-"customers"
-);
 
+
+if(!box){
+
+return;
+
+}
 
 
 
 const snapshot =
-
-await db.collection("users")
-.get();
-
+await db.collection("users").get();
 
 
 
 box.innerHTML="";
-
-
 
 
 
@@ -175,46 +163,52 @@ box.innerHTML += `
 <div class="card">
 
 
-<strong>
+<h3>
+👤 ${user.name || "Kein Name"}
+</h3>
 
-${user.name}
 
-</strong>
+<p>
 
+🆔 ${user.customerID || doc.id}
+
+</p>
+
+
+<p>
+
+📧 ${user.email || ""}
+
+</p>
+
+
+<p>
+
+📞 ${user.phone || ""}
+
+</p>
+
+
+<p>
+
+📍 ${user.street || ""}
 
 <br>
 
-ID:
-${user.customerID}
+${user.zip || ""}
 
+${user.city || ""}
 
-<br>
-
-Telefon:
-${user.phone}
-
-
-<br>
-
-Adresse:
-
-${user.street}
-
-${user.zip}
-
-${user.city}
+</p>
 
 
 </div>
 
 
-
 `;
 
 
-
 });
-
 
 
 }
@@ -227,29 +221,29 @@ ${user.city}
 
 
 // ===================================
-// Bestellungen laden
+// BESTELLUNGEN LADEN
 // ===================================
 
 
 async function loadOrders(){
 
 
-
 const box =
+document.getElementById("orders");
 
-document.getElementById(
-"orders"
-);
 
+
+if(!box){
+
+return;
+
+}
 
 
 
 const snapshot =
-
 await db.collection("orders")
 .get();
-
-
 
 
 
@@ -257,13 +251,11 @@ box.innerHTML="";
 
 
 
-
-
 if(snapshot.empty){
 
 
 box.innerHTML =
-"Keine Bestellungen";
+"Keine Bestellungen vorhanden.";
 
 
 return;
@@ -274,13 +266,52 @@ return;
 
 
 
-snapshot.forEach(doc=>{
 
+snapshot.forEach(doc=>{
 
 
 const order =
 doc.data();
 
+
+
+let productsHTML="";
+
+
+
+if(order.products){
+
+
+order.products.forEach(product=>{
+
+
+productsHTML += `
+
+
+<li>
+
+${product.name}
+
+<br>
+
+Menge:
+${product.quantity}
+
+<br>
+
+Preis:
+${product.price} €
+
+</li>
+
+
+`;
+
+
+});
+
+
+}
 
 
 
@@ -290,36 +321,66 @@ box.innerHTML += `
 <div class="card">
 
 
-Produkt:
-
-<strong>
-${order.product}
-</strong>
+<h3>
+🛒 Bestellung
+</h3>
 
 
-<br>
+
+<p>
+
+<strong>Kunde:</strong>
+
+${order.customerName || ""}
+
+</p>
 
 
-Preis:
 
-${order.price} €
+<p>
+
+<strong>E-Mail:</strong>
+
+${order.customerEmail || ""}
+
+</p>
 
 
-<br>
 
 
-Status:
+<p>
 
-${order.status}
+<strong>Status:</strong>
+
+${order.status || "Offen"}
+
+</p>
+
+
+
+
+<p>
+
+<strong>Gesamt:</strong>
+
+${order.totalPrice || 0} €
+
+</p>
+
+
+
+<ul>
+
+${productsHTML}
+
+</ul>
 
 
 
 </div>
 
 
-
 `;
-
 
 
 

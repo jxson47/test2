@@ -3,7 +3,7 @@
 // ===================================
 
 
-// DEINE FIREBASE DATEN EINTRAGEN
+// DEINE FIREBASE DATEN
 
 const firebaseConfig = {
 
@@ -30,9 +30,15 @@ const firebaseConfig = {
 
 // Firebase starten
 
-firebase.initializeApp(firebaseConfig);
+if(!firebase.apps.length){
+
+    firebase.initializeApp(firebaseConfig);
+
+}
 
 
+
+// Globale Verbindungen
 
 const auth = firebase.auth();
 

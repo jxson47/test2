@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="de">
 
+
 <head>
 
+
 <meta charset="UTF-8">
+
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<title>RollerWerkstatt Shop</title>
+
+<title>
+RollerWerkstatt Shop
+</title>
+
 
 
 <link rel="stylesheet" href="style.css">
@@ -19,6 +26,7 @@
 
 
 <body>
+
 
 
 
@@ -33,6 +41,7 @@
 
 
 
+
 <nav>
 
 
@@ -41,9 +50,11 @@ Start
 </a>
 
 
+
 <a href="shop.html">
 Shop
 </a>
+
 
 
 <a href="konto.html">
@@ -51,15 +62,65 @@ Konto
 </a>
 
 
+
+
 <a href="warenkorb.html">
+
+
 🛒 Warenkorb
+
+
+<span id="cartCount">
+0
+</span>
+
+
 </a>
+
 
 
 </nav>
 
 
+
 </header>
+
+
+
+
+
+
+
+<!-- Nachricht Fenster -->
+
+
+<div id="messageBox" class="message-box">
+
+
+
+<div class="message-content">
+
+
+
+<p id="messageText">
+
+</p>
+
+
+
+<div id="messageButtons">
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
 
 
 
@@ -76,6 +137,9 @@ Konto
 <div class="box shop-header">
 
 
+
+
+
 <h1>
 
 🛒 RollerWerkstatt Shop
@@ -84,11 +148,19 @@ Konto
 
 
 
+
+
+
+
 <p>
 
 Ersatzteile, Tuningteile und Zubehör für Zweitakt-Roller.
 
 </p>
+
+
+
+
 
 
 
@@ -103,10 +175,10 @@ Ersatzteile, Tuningteile und Zubehör für Zweitakt-Roller.
 
 
 
-<!-- Kategorien -->
 
 
 <section>
+
 
 
 <h2>
@@ -114,6 +186,8 @@ Ersatzteile, Tuningteile und Zubehör für Zweitakt-Roller.
 Kategorien
 
 </h2>
+
+
 
 
 
@@ -136,11 +210,8 @@ class="shop-grid">
 
 
 
-
-<!-- Unterkategorien -->
-
-
 <section>
+
 
 
 <h2>
@@ -148,6 +219,8 @@ class="shop-grid">
 Unterkategorien
 
 </h2>
+
+
 
 
 
@@ -170,11 +243,8 @@ class="shop-grid">
 
 
 
-
-<!-- Produkte -->
-
-
 <section>
+
 
 
 <h2>
@@ -182,6 +252,8 @@ class="shop-grid">
 Produkte
 
 </h2>
+
+
 
 
 
@@ -202,7 +274,10 @@ class="product-grid">
 
 
 
+
+
 </div>
+
 
 
 
@@ -227,7 +302,7 @@ class="product-grid">
 
 
 
-<!-- Firebase -->
+
 
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -244,13 +319,22 @@ class="product-grid">
 
 
 
-<!-- Eigene Dateien -->
 
 
 <script src="js/firebase.js"></script>
 
 
+<script src="js/message.js"></script>
+
+
+<script src="js/cart.js"></script>
+
+
 <script src="js/shop.js"></script>
+
+
+<script src="script.js"></script>
+
 
 
 
