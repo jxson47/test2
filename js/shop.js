@@ -9,61 +9,27 @@ document.getElementById("productContainer");
 
 
 
-const categories = {
 
+// ===============================
+// Kategorien aus Firebase laden
+// ===============================
 
-"Motor":[
-
-"Zylinderkits",
-"Dichtungen",
-"Kurbelwellen",
-"Kurbelwellenlager",
-"Auspuffanlagen",
-"Vergaser",
-"Ansaugstutzen",
-"Membransysteme"
-
-],
-
-
-
-"Antrieb":[
-
-"Variomatik",
-"Variomatikgewichte",
-"Keilriemen",
-"Riemenscheiben",
-"Kupplungen",
-"Kupplungsglocken"
-
-],
-
-
-
-"Zündung":[
-
-"Lichtmaschinen",
-"Zündkerzen",
-"CDI",
-"Zündspulen"
-
-]
-
-
-};
-
-
-
-
-
-
-function loadCategories(){
+async function loadCategories(){
 
 
 categoryContainer.innerHTML="";
 
 
-Object.keys(categories).forEach(category=>{
+const snapshot =
+await db.collection("categories").get();
+
+
+
+snapshot.forEach(doc=>{
+
+
+const category = doc.data();
+
 
 
 categoryContainer.innerHTML += `
@@ -71,13 +37,11 @@ categoryContainer.innerHTML += `
 
 <div class="shop-category"
 
-onclick="openCategory('${category}')">
+onclick="openCategory('${doc.id}')">
 
 
 <h2>
-
-🔧 ${category}
-
+🔧 ${category.name}
 </h2>
 
 
@@ -91,6 +55,7 @@ Kategorie öffnen
 
 `;
 
+
 });
 
 
@@ -99,8 +64,12 @@ Kategorie öffnen
 
 
 
+// ===============================
+// Unterkategorien laden
+// ===============================
 
-function openCategory(category){
+
+async function openCategory(categoryID){
 
 
 subcategoryContainer.innerHTML="";
@@ -109,7 +78,21 @@ productContainer.innerHTML="";
 
 
 
-categories[category].forEach(sub=>{
+const snapshot =
+
+await db.collection("categories")
+.doc(categoryID)
+.collection("subcategories")
+.get();
+
+
+
+
+snapshot.forEach(doc=>{
+
+
+const sub = doc.data();
+
 
 
 subcategoryContainer.innerHTML += `
@@ -117,13 +100,11 @@ subcategoryContainer.innerHTML += `
 
 <div class="shop-subcategory"
 
-onclick="loadProducts('${sub}')">
+onclick="loadProducts('${doc.id}')">
 
 
 <h3>
-
-${sub}
-
+${sub.name}
 </h3>
 
 
@@ -131,6 +112,8 @@ ${sub}
 
 
 `;
+
+
 
 });
 
@@ -141,9 +124,12 @@ ${sub}
 
 
 
+// ===============================
+// Produkte laden
+// ===============================
 
 
-async function loadProducts(sub){
+async function loadProducts(subcategory){
 
 
 productContainer.innerHTML=
@@ -151,8 +137,10 @@ productContainer.innerHTML=
 
 
 
-const snapshot = await db.collection("products")
-.where("subcategory","==",sub)
+const snapshot =
+
+await db.collection("products")
+.where("subcategory","==",subcategory)
 .get();
 
 
@@ -183,7 +171,6 @@ Diese Kategorie wird noch gefüllt.
 
 return;
 
-
 }
 
 
@@ -204,9 +191,10 @@ productContainer.innerHTML += `
 
 
 <img 
-class="product-image"
-src="${product.image}">
 
+class="product-image"
+
+src="${product.image || ''}">
 
 
 <h2>
@@ -215,14 +203,14 @@ ${product.name}
 
 
 <p>
-${product.description}
+${product.description || ""}
 </p>
-
 
 
 <h3>
 ${product.price} €
 </h3>
+
 
 
 <button onclick="buyProduct('${doc.id}')">
@@ -232,10 +220,12 @@ Kaufen
 </button>
 
 
+
 </div>
 
 
 `;
+
 
 
 });
@@ -246,7 +236,9 @@ Kaufen
 
 
 
-
+// ===============================
+// Kaufen
+// ===============================
 
 
 async function buyProduct(id){
@@ -255,7 +247,9 @@ async function buyProduct(id){
 const user = auth.currentUser;
 
 
+
 if(!user){
+
 
 alert("Bitte zuerst anmelden");
 
@@ -263,18 +257,22 @@ location.href="login.html";
 
 return;
 
+
 }
 
 
 
 
-const doc = await db.collection("products")
+const productDoc =
+
+await db.collection("products")
 .doc(id)
 .get();
 
 
 
-const product = doc.data();
+const product =
+productDoc.data();
 
 
 
@@ -300,7 +298,6 @@ created:new Date()
 
 
 alert("Bestellung wurde aufgenommen!");
-
 
 
 }
