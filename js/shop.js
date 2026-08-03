@@ -1,34 +1,17 @@
-// ======================================
-// RollerWerkstatt Shop System
-// Firebase Version
-// ======================================
-
-
-const categoryContainer = 
+const categoryContainer =
 document.getElementById("categoryContainer");
 
-
-const subcategoryContainer = 
+const subcategoryContainer =
 document.getElementById("subcategoryContainer");
 
-
-const productContainer = 
+const productContainer =
 document.getElementById("productContainer");
 
 
 
-
-// Kategorien
-
 const categories = {
 
-
-"Motor": {
-
-icon:"🔧",
-
-sub:[
-
+"Motor":[
 "Zylinderkits",
 "Dichtungen",
 "Kurbelwellen",
@@ -37,46 +20,25 @@ sub:[
 "Vergaser",
 "Ansaugstutzen",
 "Membransysteme"
-
-]
-
-},
+],
 
 
-
-"Antrieb": {
-
-icon:"⚙️",
-
-sub:[
-
+"Antrieb":[
 "Variomatik",
 "Variomatikgewichte",
 "Keilriemen",
 "Riemenscheiben",
 "Kupplungen",
 "Kupplungsglocken"
-
-]
-
-},
+],
 
 
-
-"Zündung": {
-
-icon:"⚡",
-
-sub:[
-
+"Zündung":[
 "Lichtmaschinen",
 "Zündkerzen",
 "CDI",
 "Zündspulen"
-
 ]
-
-}
 
 
 };
@@ -85,49 +47,29 @@ sub:[
 
 
 
-// ================================
-// Kategorien anzeigen
-// ================================
-
-
 function loadCategories(){
-
-
-subcategoryContainer.innerHTML="";
-
-productContainer.innerHTML="";
 
 
 categoryContainer.innerHTML="";
 
 
-
-Object.keys(categories).forEach(category=>{
-
-
-let data = categories[category];
-
+for(let category in categories){
 
 
 categoryContainer.innerHTML += `
 
 
 <div class="shop-category"
-
 onclick="openCategory('${category}')">
 
 
 <h2>
-
-${data.icon} ${category}
-
+🔧 ${category}
 </h2>
 
 
 <p>
-
-Kategorie öffnen
-
+Produkte anzeigen
 </p>
 
 
@@ -136,9 +78,7 @@ Kategorie öffnen
 
 `;
 
-
-
-});
+}
 
 
 }
@@ -146,59 +86,26 @@ Kategorie öffnen
 
 
 
-
-
-// ================================
-// Unterkategorien
-// ================================
-
-
 function openCategory(category){
-
-
-categoryContainer.innerHTML="";
 
 
 subcategoryContainer.innerHTML="";
 
-
 productContainer.innerHTML="";
 
 
-
-let back = `
-
-<button class="button"
-
-onclick="loadCategories()">
-
-← Kategorien
-
-</button>
-
-`;
-
-
-
-subcategoryContainer.innerHTML += back;
-
-
-
-categories[category].sub.forEach(sub=>{
+categories[category].forEach(item=>{
 
 
 subcategoryContainer.innerHTML += `
 
 
 <div class="shop-subcategory"
-
-onclick="loadProducts('${sub}')">
+onclick="loadProducts('${item}')">
 
 
 <h3>
-
-${sub}
-
+${item}
 </h3>
 
 
@@ -206,7 +113,6 @@ ${sub}
 
 
 `;
-
 
 
 });
@@ -219,41 +125,17 @@ ${sub}
 
 
 
-// ================================
-// Produkte laden
-// ================================
-
-
-async function loadProducts(subcategory){
+async function loadProducts(sub){
 
 
 productContainer.innerHTML =
-
-`
-
-<div class="card">
-
-<h3>
-
-Lade Produkte...
-
-</h3>
-
-</div>
-
-`;
-
-
+"<p>Lade Produkte...</p>";
 
 
 
 const snapshot = await db.collection("products")
-
-.where("subcategory","==",subcategory)
-
+.where("subcategory","==",sub)
 .get();
-
-
 
 
 
@@ -261,68 +143,35 @@ productContainer.innerHTML="";
 
 
 
-subcategoryContainer.innerHTML += `
-
-
-<button class="button"
-
-onclick="openCategoryBack()">
-
-← Unterkategorien
-
-</button>
-
-
-`;
-
-
-
-
-
 if(snapshot.empty){
 
 
-productContainer.innerHTML = `
-
+productContainer.innerHTML=`
 
 <div class="card">
 
-
 <h3>
-
 Keine Produkte gefunden
-
 </h3>
 
-
 <p>
-
-Diese Kategorie wird bald erweitert.
-
+Diese Kategorie wird noch aufgebaut.
 </p>
-
 
 </div>
 
-
 `;
-
 
 return;
 
-
 }
-
-
-
 
 
 
 snapshot.forEach(doc=>{
 
 
-let product = doc.data();
-
+let p = doc.data();
 
 
 
@@ -332,58 +181,36 @@ productContainer.innerHTML += `
 <div class="product-card card">
 
 
-
 <img 
-
-src="${product.image}"
-
-class="product-image"
-
-onerror="this.src='yamaha-aerox.jpg'"
-
->
-
-
+src="${p.image}"
+class="product-image">
 
 
 <h2>
-
-${product.name}
-
+${p.name}
 </h2>
 
 
-
 <p class="category">
-
-${product.category || ""}
-
+${p.category || ""}
 </p>
-
 
 
 <p>
-
-${product.description}
-
+${p.description}
 </p>
 
 
-
 <h3>
-
-${Number(product.price).toFixed(2)} €
-
+${p.price} €
 </h3>
-
 
 
 <button onclick="buyProduct('${doc.id}')">
 
-🛒 Kaufen
+Kaufen
 
 </button>
-
 
 
 </div>
@@ -396,23 +223,6 @@ ${Number(product.price).toFixed(2)} €
 });
 
 
-
-}
-
-
-
-
-// ================================
-// Zurück zu Unterkategorien
-// ================================
-
-
-function openCategoryBack(){
-
-
-loadCategories();
-
-
 }
 
 
@@ -420,97 +230,52 @@ loadCategories();
 
 
 
-// ================================
-// Bestellung speichern
-// ================================
-
-
-async function buyProduct(productID){
-
+async function buyProduct(id){
 
 
 const user = auth.currentUser;
 
 
-
 if(!user){
 
+alert("Bitte zuerst anmelden");
 
-alert(
-"Bitte zuerst anmelden!"
-);
-
-
-window.location.href="login.html";
-
+location.href="login.html";
 
 return;
-
 
 }
 
 
 
-
-const productDoc = await db.collection("products")
-
-.doc(productID)
-
+const product = await db.collection("products")
+.doc(id)
 .get();
-
-
-
-const product = productDoc.data();
-
-
 
 
 
 await db.collection("orders").add({
 
-
-
 customerUID:user.uid,
 
+productID:id,
 
-productID:productID,
+productName:product.data().name,
 
-
-productName:product.name,
-
-
-price:product.price,
-
+price:product.data().price,
 
 status:"Offen",
 
-
 created:new Date()
-
-
 
 });
 
 
 
-
-
-alert(
-
-"Bestellung wurde erfolgreich aufgenommen!"
-
-);
-
-
+alert("Bestellung wurde aufgenommen!");
 
 }
 
 
-
-
-
-
-
-// Start
 
 loadCategories();
