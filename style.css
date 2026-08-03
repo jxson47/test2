@@ -1,383 +1,434 @@
 /* =========================
-   SHOP PREMIUM ERWEITERUNG
+   RollerWerkstatt Premium Design
 ========================= */
 
 
-.shop-header h1 {
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Arial, sans-serif;
+}
+
+
+html {
+    scroll-behavior:smooth;
+}
+
+
+body {
+
+    background:#0b0e13;
+    color:white;
+    min-height:100vh;
+
+}
+
+
+
+/* =========================
+   HEADER
+========================= */
+
+
+header {
+
+    width:100%;
+    padding:20px 8%;
+
+    background:
+    rgba(15,18,25,0.95);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:sticky;
+    top:0;
+
+    z-index:100;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
+
+}
+
+
+
+.logo {
+
+    font-size:28px;
+    font-weight:800;
 
     color:#00b7ff;
 
-    font-size:45px;
-
-    margin-bottom:15px;
-
 }
 
 
 
-.shop-header p {
-
-    color:#ccc;
-
-    font-size:18px;
-
-}
-
-
-
-
-/* Kategorie Karten */
-
-
-.shop-grid {
-
-
-    margin-top:30px;
-
-}
-
-
-
-.shop-category {
-
-
-    min-height:180px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-
-    background:
-
-    linear-gradient(
-    145deg,
-    #1b222d,
-    #10141b
-    );
-
-
-    box-shadow:
-    0 15px 40px rgba(0,0,0,.35);
-
-
-}
-
-
-
-.shop-category h2 {
-
-
-    font-size:30px;
-
-    margin-bottom:15px;
-
-}
-
-
-
-.shop-category p {
-
-
-    color:#aaa;
-
-}
-
-
-
-
-
-.shop-category:hover {
-
-
-    background:
-
-    linear-gradient(
-    145deg,
-    #00b7ff,
-    #006b99
-    );
-
-
-    color:#001018;
-
-
-}
-
-
-
-.shop-category:hover h2 {
-
-
-    color:#001018;
-
-
-}
-
-
-
-
-/* Unterkategorien */
-
-
-.shop-subcategory {
-
-
-    border:
-
-    1px solid rgba(255,255,255,.08);
-
-
-    background:#151b24;
-
-
-    font-size:18px;
-
-
-}
-
-
-
-.shop-subcategory h3 {
-
-
-    margin:0;
+nav a {
 
     color:white;
 
+    text-decoration:none;
+
+    margin-left:25px;
+
+    transition:.3s;
 
 }
 
 
 
-.shop-subcategory:hover h3 {
-
-
-    color:#001018;
-
-
-}
-
-
-
-
-/* Produktbereich */
-
-
-.product-grid {
-
-
-    margin-top:50px;
-
-
-}
-
-
-
-
-.product-card {
-
-
-    overflow:hidden;
-
-
-}
-
-
-
-.product-card img {
-
-
-    transition:.4s;
-
-
-}
-
-
-
-.product-card:hover img {
-
-
-    transform:scale(1.05);
-
-
-}
-
-
-
-
-
-.product-card h2 {
-
-
-    margin-top:15px;
-
-
-    font-size:22px;
-
-
-}
-
-
-
-
-.product-card p {
-
-
-    color:#ccc;
-
-
-}
-
-
-
-.product-card h3 {
-
+nav a:hover {
 
     color:#00b7ff;
 
-
 }
 
 
 
 
 
-/* Buttons */
-
-
-.product-card button {
-
-
-    background:#00b7ff;
-
-
-    color:#001018;
-
-
-    font-size:16px;
-
-
-}
-
-
-
-
-
-.product-card button:hover {
-
-
-    box-shadow:
-
-    0 10px 25px rgba(0,183,255,.4);
-
-
-}
-
-
-
-
-
-/* Mobile */
-
-
-@media(max-width:750px){
-
-
-.shop-header h1 {
-
-
-    font-size:32px;
-
-
-}
-
-
-
-.shop-category h2 {
-
-
-    font-size:24px;
-
-
-}
-
-
-
-.product-grid {
-
-
-    grid-template-columns:1fr;
-
-
-}
-
-
-}
 /* =========================
-   SHOP ERWEITERUNG
-   RollerWerkstatt Premium
+   CONTAINER
 ========================= */
 
 
-.shop-header {
-    text-align:center;
-    margin-bottom:40px;
-}
+.container {
 
+    width:90%;
 
-.shop-header h1 {
-    color:#00b7ff;
-    font-size:45px;
-}
+    max-width:1200px;
 
-
-.shop-header p {
-    color:#ccc;
-}
-
-
-/* Kategorien */
-
-.shop-grid {
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(240px,1fr));
-
-    gap:30px;
-
-    margin-top:40px;
+    margin:70px auto;
 
 }
 
 
-.shop-category {
+
+
+
+/* =========================
+   BOXEN
+========================= */
+
+
+.box {
 
     background:
+
     linear-gradient(
     145deg,
     #171c25,
     #10141b
     );
 
-    padding:35px;
+
+    padding:40px;
 
     border-radius:20px;
 
     border:
     1px solid rgba(255,255,255,.08);
 
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.4);
+
+}
+
+
+
+
+/* =========================
+   HERO
+========================= */
+
+
+.hero {
+
+    min-height:90vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
     text-align:center;
+
+}
+
+
+
+
+.hero h1 {
+
+    font-size:60px;
+
+}
+
+
+.hero span {
+
+    color:#00b7ff;
+
+}
+
+
+
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+
+button,
+.button {
+
+
+    padding:14px 30px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:#00b7ff;
+
+    color:#001018;
+
+    font-weight:bold;
 
     cursor:pointer;
 
     transition:.3s;
+
+}
+
+
+
+button:hover,
+.button:hover {
+
+    transform:scale(1.05);
+
+}
+
+
+
+
+
+/* =========================
+   INPUTS
+========================= */
+
+
+input {
+
+
+    width:100%;
+
+    padding:15px;
+
+    margin:10px 0;
+
+
+    background:#0b0e13;
+
+    color:white;
+
+
+    border:
+
+    1px solid #293241;
+
+
+    border-radius:10px;
+
+}
+
+
+
+
+
+/* =========================
+   CARDS
+========================= */
+
+
+.cards {
+
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:30px;
+
+
+}
+
+
+
+.card {
+
+
+background:
+
+linear-gradient(
+145deg,
+#171c25,
+#10141b
+);
+
+
+padding:35px;
+
+
+border-radius:20px;
+
+
+border:
+
+1px solid rgba(255,255,255,.08);
+
+
+transition:.3s;
+
+
+}
+
+
+
+.card:hover {
+
+
+transform:translateY(-8px);
+
+border-color:#00b7ff;
+
+
+}
+
+
+
+
+.card h3 {
+
+color:#00b7ff;
+
+}
+
+
+
+
+
+/* =========================
+   SHOP HEADER
+========================= */
+
+
+.shop-header {
+
+text-align:center;
+
+margin-bottom:40px;
+
+}
+
+
+
+.shop-header h1 {
+
+color:#00b7ff;
+
+font-size:45px;
+
+}
+
+
+
+.shop-header p {
+
+color:#ccc;
+
+}
+
+
+
+
+
+/* =========================
+   SHOP KATEGORIEN
+========================= */
+
+
+.shop-grid {
+
+
+display:grid;
+
+
+grid-template-columns:
+repeat(auto-fit,minmax(240px,1fr));
+
+
+gap:30px;
+
+
+margin-top:40px;
+
+
+}
+
+
+
+.shop-category {
+
+
+min-height:180px;
+
+
+display:flex;
+
+
+flex-direction:column;
+
+
+justify-content:center;
+
+
+align-items:center;
+
+
+
+background:
+
+linear-gradient(
+145deg,
+#171c25,
+#10141b
+);
+
+
+
+border-radius:20px;
+
+
+border:
+
+1px solid rgba(255,255,255,.08);
+
+
+
+cursor:pointer;
+
+
+transition:.3s;
+
 
 }
 
@@ -385,9 +436,12 @@
 
 .shop-category:hover {
 
-    transform:translateY(-8px);
 
-    border-color:#00b7ff;
+transform:translateY(-8px);
+
+
+border-color:#00b7ff;
+
 
 }
 
@@ -395,41 +449,49 @@
 
 .shop-category h2 {
 
-    color:#00b7ff;
 
-    font-size:28px;
+color:#00b7ff;
 
-}
+font-size:28px;
 
-
-
-.shop-category p {
-
-    color:#ccc;
 
 }
 
 
 
 
-/* Unterkategorien */
+
+/* =========================
+   UNTERKATEGORIEN
+========================= */
 
 
 .shop-subcategory {
 
-    background:#171d27;
 
-    padding:25px;
+background:#151b24;
 
-    border-radius:15px;
 
-    border:1px solid rgba(255,255,255,.08);
+padding:25px;
 
-    cursor:pointer;
 
-    text-align:center;
+border-radius:15px;
 
-    transition:.3s;
+
+border:
+
+1px solid rgba(255,255,255,.08);
+
+
+
+text-align:center;
+
+
+cursor:pointer;
+
+
+transition:.3s;
+
 
 }
 
@@ -437,37 +499,61 @@
 
 .shop-subcategory:hover {
 
-    background:#00b7ff;
 
-    color:#001018;
+background:#00b7ff;
+
+color:#001018;
+
 
 }
 
 
 
 
-
-/* Produkte */
+/* =========================
+   PRODUKTE
+========================= */
 
 
 .product-grid {
 
-    display:grid;
 
-    grid-template-columns:
-    repeat(auto-fit,minmax(280px,1fr));
+display:grid;
 
-    gap:30px;
 
-    margin-top:50px;
+grid-template-columns:
+repeat(auto-fit,minmax(280px,1fr));
+
+
+gap:30px;
+
+
+margin-top:50px;
+
 
 }
+
+
 
 
 
 .product-card {
 
-    text-align:center;
+
+text-align:center;
+
+
+overflow:hidden;
+
+
+}
+
+
+
+.product-card:hover {
+
+
+transform:translateY(-8px);
 
 }
 
@@ -475,17 +561,24 @@
 
 .product-image {
 
-    width:100%;
 
-    height:250px;
+width:100%;
 
-    object-fit:contain;
 
-    background:#0b0e13;
+height:250px;
 
-    border-radius:15px;
 
-    margin-bottom:20px;
+object-fit:contain;
+
+
+background:#0b0e13;
+
+
+border-radius:15px;
+
+
+margin-bottom:20px;
+
 
 }
 
@@ -493,7 +586,12 @@
 
 .product-card h2 {
 
-    color:#00b7ff;
+
+color:#00b7ff;
+
+
+font-size:22px;
+
 
 }
 
@@ -501,9 +599,12 @@
 
 .product-card h3 {
 
-    color:white;
 
-    font-size:26px;
+font-size:26px;
+
+
+color:white;
+
 
 }
 
@@ -511,8 +612,142 @@
 
 .category {
 
-    color:#00b7ff;
 
-    text-transform:uppercase;
+color:#00b7ff;
+
+
+text-transform:uppercase;
+
+
+font-size:13px;
+
+
+}
+
+
+
+
+/* =========================
+   ZURÜCK BUTTON
+========================= */
+
+
+.back-button {
+
+
+position:fixed;
+
+
+top:90px;
+
+left:25px;
+
+
+z-index:200;
+
+
+background:#171d27;
+
+
+color:white;
+
+
+border:
+
+1px solid #00b7ff;
+
+
+padding:12px 22px;
+
+
+}
+
+
+
+
+
+/* =========================
+   FOOTER
+========================= */
+
+
+footer {
+
+
+background:#07090d;
+
+
+text-align:center;
+
+
+padding:30px;
+
+
+color:#888;
+
+
+}
+
+
+
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
+@media(max-width:750px){
+
+
+header {
+
+flex-direction:column;
+
+}
+
+
+nav {
+
+margin-top:20px;
+
+}
+
+
+.hero h1 {
+
+font-size:40px;
+
+}
+
+
+
+.shop-header h1 {
+
+font-size:32px;
+
+}
+
+
+
+.shop-grid,
+.product-grid {
+
+
+grid-template-columns:1fr;
+
+
+}
+
+
+
+.back-button {
+
+top:20px;
+
+left:15px;
+
+}
+
 
 }
