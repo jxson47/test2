@@ -1,156 +1,314 @@
-// ===================================
-// RollerWerkstatt Shop
-// Produkte aus Firebase laden
-// ===================================
+// ======================================
+// RollerWerkstatt Shop System
+// Firebase Version
+// ======================================
 
 
-const productContainer = document.getElementById("productContainer");
+const categoryContainer = 
+document.getElementById("categoryContainer");
 
 
+const subcategoryContainer = 
+document.getElementById("subcategoryContainer");
+
+
+const productContainer = 
+document.getElementById("productContainer");
+
+
+
+
+// Kategorien
+
+const categories = {
+
+
+"Motor": {
+
+icon:"🔧",
+
+sub:[
+
+"Zylinderkits",
+"Dichtungen",
+"Kurbelwellen",
+"Kurbelwellenlager",
+"Auspuffanlagen",
+"Vergaser",
+"Ansaugstutzen",
+"Membransysteme"
+
+]
+
+},
+
+
+
+"Antrieb": {
+
+icon:"⚙️",
+
+sub:[
+
+"Variomatik",
+"Variomatikgewichte",
+"Keilriemen",
+"Riemenscheiben",
+"Kupplungen",
+"Kupplungsglocken"
+
+]
+
+},
+
+
+
+"Zündung": {
+
+icon:"⚡",
+
+sub:[
+
+"Lichtmaschinen",
+"Zündkerzen",
+"CDI",
+"Zündspulen"
+
+]
+
+}
+
+
+};
+
+
+
+
+
+// ================================
+// Kategorien anzeigen
+// ================================
+
+
+function loadCategories(){
+
+
+subcategoryContainer.innerHTML="";
+
+productContainer.innerHTML="";
+
+
+categoryContainer.innerHTML="";
+
+
+
+Object.keys(categories).forEach(category=>{
+
+
+let data = categories[category];
+
+
+
+categoryContainer.innerHTML += `
+
+
+<div class="shop-category"
+
+onclick="openCategory('${category}')">
+
+
+<h2>
+
+${data.icon} ${category}
+
+</h2>
+
+
+<p>
+
+Kategorie öffnen
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+// ================================
+// Unterkategorien
+// ================================
+
+
+function openCategory(category){
+
+
+categoryContainer.innerHTML="";
+
+
+subcategoryContainer.innerHTML="";
+
+
+productContainer.innerHTML="";
+
+
+
+let back = `
+
+<button class="button"
+
+onclick="loadCategories()">
+
+← Kategorien
+
+</button>
+
+`;
+
+
+
+subcategoryContainer.innerHTML += back;
+
+
+
+categories[category].sub.forEach(sub=>{
+
+
+subcategoryContainer.innerHTML += `
+
+
+<div class="shop-subcategory"
+
+onclick="loadProducts('${sub}')">
+
+
+<h3>
+
+${sub}
+
+</h3>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+// ================================
 // Produkte laden
+// ================================
 
-async function loadProducts() {
 
+async function loadProducts(subcategory){
 
-    try {
 
+productContainer.innerHTML =
 
-        const snapshot = await db
-            .collection("products")
-            .get();
+`
 
+<div class="card">
 
+<h3>
 
-        if (snapshot.empty) {
+Lade Produkte...
 
+</h3>
 
-            productContainer.innerHTML = `
+</div>
 
-            <div class="card">
+`;
 
-                <h3>
-                Noch keine Artikel verfügbar
-                </h3>
 
-                <p>
-                Der Shop wird gerade aufgebaut.
-                </p>
 
-            </div>
 
-            `;
 
-            return;
+const snapshot = await db.collection("products")
 
-        }
+.where("subcategory","==",subcategory)
 
+.get();
 
 
 
-        productContainer.innerHTML = "";
 
 
+productContainer.innerHTML="";
 
-        snapshot.forEach(function(doc) {
 
 
-            const product = doc.data();
+subcategoryContainer.innerHTML += `
 
 
+<button class="button"
 
-            productContainer.innerHTML += `
+onclick="openCategoryBack()">
 
+← Unterkategorien
 
-            <div class="card product-card">
+</button>
 
 
-                <img 
-                src="${product.image || 'bild-fehlt.jpg'}"
-                alt="${product.name}"
-                class="product-image"
-                >
+`;
 
 
 
-                <h2>
 
-                ${product.name}
 
-                </h2>
+if(snapshot.empty){
 
 
+productContainer.innerHTML = `
 
-                <p>
 
-                ${product.description}
+<div class="card">
 
-                </p>
 
+<h3>
 
+Keine Produkte gefunden
 
-                <p class="category">
+</h3>
 
-                Kategorie:
-                ${product.category}
 
-                </p>
+<p>
 
+Diese Kategorie wird bald erweitert.
 
+</p>
 
-                <h3>
 
-                ${Number(product.price).toFixed(2)} €
+</div>
 
-                </h3>
 
+`;
 
 
-
-                <button onclick="buyProduct('${doc.id}')">
-
-                🛒 Kaufen
-
-                </button>
-
-
-
-            </div>
-
-
-            `;
-
-
-
-        });
-
-
-
-    }
-
-
-    catch(error) {
-
-
-        console.error(
-            "Shop Fehler:",
-            error
-        );
-
-
-        productContainer.innerHTML = `
-
-        <div class="card">
-
-        <h3>
-        Fehler beim Laden des Shops
-        </h3>
-
-        </div>
-
-        `;
-
-
-    }
+return;
 
 
 }
@@ -159,120 +317,189 @@ async function loadProducts() {
 
 
 
-// ===================================
+
+snapshot.forEach(doc=>{
+
+
+let product = doc.data();
+
+
+
+
+productContainer.innerHTML += `
+
+
+<div class="product-card card">
+
+
+
+<img 
+
+src="${product.image}"
+
+class="product-image"
+
+onerror="this.src='yamaha-aerox.jpg'"
+
+>
+
+
+
+
+<h2>
+
+${product.name}
+
+</h2>
+
+
+
+<p class="category">
+
+${product.category || ""}
+
+</p>
+
+
+
+<p>
+
+${product.description}
+
+</p>
+
+
+
+<h3>
+
+${Number(product.price).toFixed(2)} €
+
+</h3>
+
+
+
+<button onclick="buyProduct('${doc.id}')">
+
+🛒 Kaufen
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+
+// ================================
+// Zurück zu Unterkategorien
+// ================================
+
+
+function openCategoryBack(){
+
+
+loadCategories();
+
+
+}
+
+
+
+
+
+
+// ================================
 // Bestellung speichern
-// ===================================
+// ================================
 
 
-async function buyProduct(productID) {
+async function buyProduct(productID){
 
 
-    const user = auth.currentUser;
 
+const user = auth.currentUser;
 
 
-    if(!user) {
 
+if(!user){
 
-        alert(
-            "Bitte zuerst anmelden."
-        );
 
+alert(
+"Bitte zuerst anmelden!"
+);
 
-        window.location.href =
-        "login.html";
 
+window.location.href="login.html";
 
-        return;
 
-    }
+return;
 
 
+}
 
 
-    try {
 
 
+const productDoc = await db.collection("products")
 
-        const productDoc = await db
-        .collection("products")
-        .doc(productID)
-        .get();
+.doc(productID)
 
+.get();
 
 
-        const product =
-        productDoc.data();
 
+const product = productDoc.data();
 
 
 
 
-        await db.collection("orders")
-        .add({
 
+await db.collection("orders").add({
 
 
-            customerUID:
-            user.uid,
 
+customerUID:user.uid,
 
 
-            productID:
-            productID,
+productID:productID,
 
 
+productName:product.name,
 
-            product:
-            product.name,
 
+price:product.price,
 
 
-            price:
-            product.price,
+status:"Offen",
 
 
+created:new Date()
 
-            status:
-            "Offen",
 
 
+});
 
-            created:
-            firebase.firestore.FieldValue.serverTimestamp()
 
 
 
-        });
 
+alert(
 
+"Bestellung wurde erfolgreich aufgenommen!"
 
-
-
-        alert(
-        "Bestellung wurde aufgenommen!"
-        );
-
-
-
-    }
-
-
-    catch(error) {
-
-
-        console.error(
-            "Bestellfehler:",
-            error
-        );
-
-
-        alert(
-        "Bestellung konnte nicht gespeichert werden."
-        );
-
-
-    }
+);
 
 
 
@@ -281,6 +508,9 @@ async function buyProduct(productID) {
 
 
 
-// Shop starten
 
-loadProducts();
+
+
+// Start
+
+loadCategories();

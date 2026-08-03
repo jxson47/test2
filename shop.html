@@ -1,22 +1,14 @@
 <!DOCTYPE html>
-
 <html lang="de">
-
 
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-<title>
-Shop | RollerWerkstatt
-</title>
-
+<title>RollerWerkstatt Shop</title>
 
 <link rel="stylesheet" href="style.css">
-
 
 </head>
 
@@ -24,36 +16,22 @@ Shop | RollerWerkstatt
 <body>
 
 
-
 <header>
 
-
 <div class="logo">
-
 🔧 RollerWerkstatt
-
 </div>
-
 
 
 <nav>
 
-<a href="index.html">
-Start
-</a>
-
-
-<a href="konto.html">
-Konto
-</a>
-
+<a href="index.html">Start</a>
+<a href="shop.html">Shop</a>
+<a href="konto.html">Konto</a>
 
 </nav>
 
-
-
 </header>
-
 
 
 
@@ -61,7 +39,8 @@ Konto
 <div class="container">
 
 
-<div class="box">
+
+<div class="box shop-header">
 
 
 <h1>
@@ -69,15 +48,22 @@ Konto
 </h1>
 
 
-
 <p>
-
-Hier findest du Ersatzteile,
-Zubehör und Angebote.
-
+Ersatzteile und Tuningteile für viele Zweitakt-Roller.
 </p>
 
 
+</div>
+
+
+
+
+
+<!-- Hauptkategorien -->
+
+<div id="categoryContainer" class="shop-grid">
+
+
 
 </div>
 
@@ -85,10 +71,28 @@ Zubehör und Angebote.
 
 
 
-<div id="productContainer">
+
+<!-- Unterkategorien -->
+
+<div id="subcategoryContainer" class="shop-grid">
 
 
-<!-- Produkte werden hier geladen -->
+
+</div>
+
+
+
+
+
+
+<!-- Produkte -->
+
+<div id="productContainer" class="product-grid">
+
+
+
+</div>
+
 
 
 </div>
@@ -97,31 +101,26 @@ Zubehör und Angebote.
 
 
 
-</div>
+<footer>
 
+© 2026 RollerWerkstatt
 
+</footer>
 
 
 
 
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 
+<script src="firebase.js"></script>
 
-<script src="js/firebase.js"></script>
-
-<script src="js/shop.js"></script>
-
-<script src="script.js"></script>
-
+<script src="shop.js"></script>
 
 
 </body>
-
 
 </html>
