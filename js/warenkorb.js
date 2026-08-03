@@ -1,25 +1,16 @@
 const cartContainer =
 document.getElementById("cartContainer");
 
-
 const totalPrice =
 document.getElementById("totalPrice");
-
-
-const customerInfo =
-document.getElementById("customerInfo");
-
 
 
 let currentUser = null;
 
 
-
-
 // ===============================
-// Benutzer prüfen
+// LOGIN PRÜFEN
 // ===============================
-
 
 auth.onAuthStateChanged(async function(user){
 
@@ -46,13 +37,9 @@ await loadCart(user.uid);
 
 
 
-
-
-
 // ===============================
-// Kundendaten laden
+// LIEFERDATEN LADEN
 // ===============================
-
 
 async function loadCustomerData(uid){
 
@@ -60,7 +47,8 @@ async function loadCustomerData(uid){
 try{
 
 
-const userDoc = await db.collection("users")
+const userDoc =
+await db.collection("users")
 .doc(uid)
 .get();
 
@@ -73,41 +61,32 @@ const customer = userDoc.data();
 
 
 
-if(customerInfo){
+document.getElementById("customerName").value =
+customer.name || "";
 
 
-customerInfo.innerHTML = `
+document.getElementById("customerEmail").value =
+customer.email || "";
 
-<h3>
-📦 Lieferadresse
-</h3>
 
-<p>
+document.getElementById("customerStreet").value =
+customer.street || "";
 
-<strong>${customer.name || ""}</strong>
 
-<br>
+document.getElementById("customerZip").value =
+customer.zip || "";
 
-${customer.address || ""}
 
-<br>
+document.getElementById("customerCity").value =
+customer.city || "";
 
-${customer.phone || ""}
 
-<br>
-
-${customer.email || ""}
-
-</p>
-
-`;
-
-}
+document.getElementById("customerPhone").value =
+customer.phone || "";
 
 
 
 }
-
 
 
 }
@@ -125,20 +104,77 @@ console.log(error);
 
 
 
+// ===============================
+// LIEFERDATEN SPEICHERN
+// ===============================
 
+async function saveDeliveryData(){
+
+
+const user = auth.currentUser;
+
+
+if(!user){
+
+alert("Nicht angemeldet");
+
+return;
+
+}
+
+
+
+await db.collection("users")
+.doc(user.uid)
+.set({
+
+
+name:
+document.getElementById("customerName").value,
+
+
+email:
+document.getElementById("customerEmail").value,
+
+
+street:
+document.getElementById("customerStreet").value,
+
+
+zip:
+document.getElementById("customerZip").value,
+
+
+city:
+document.getElementById("customerCity").value,
+
+
+phone:
+document.getElementById("customerPhone").value
+
+
+
+},{merge:true});
+
+
+
+alert(
+"Lieferdaten gespeichert!"
+);
+
+
+
+}
 
 
 
 
 // ===============================
-// Warenkorb laden
+// WARENKORB LADEN
 // ===============================
 
 
 async function loadCart(uid){
-
-
-try{
 
 
 const snapshot = await db.collection("carts")
@@ -155,18 +191,11 @@ let total = 0;
 
 
 
-
 if(snapshot.empty){
 
 
-cartContainer.innerHTML = `
-
-<p>
-Dein Warenkorb ist leer.
-</p>
-
-`;
-
+cartContainer.innerHTML =
+"<p>Warenkorb ist leer.</p>";
 
 
 totalPrice.innerHTML =
@@ -182,18 +211,13 @@ return;
 
 
 
-
-
 snapshot.forEach(doc=>{
 
 
-const product = doc.data();
+const item = doc.data();
 
 
-
-total += 
-product.price * product.quantity;
-
+total += item.price * item.quantity;
 
 
 
@@ -204,23 +228,39 @@ cartContainer.innerHTML += `
 
 
 <h3>
-${product.name}
+${item.name}
 </h3>
-
 
 
 <p>
 Preis:
-${product.price} €
+${item.price} €
 </p>
 
 
 
 <p>
 Menge:
-${product.quantity}
 </p>
 
+
+<button onclick="changeQuantity('${doc.id}',-1)">
+➖
+</button>
+
+
+<strong>
+${item.quantity}
+</strong>
+
+
+<button onclick="changeQuantity('${doc.id}',1)">
+➕
+</button>
+
+
+
+<br><br>
 
 
 <button onclick="removeItem('${doc.id}')">
@@ -228,7 +268,6 @@ ${product.quantity}
 ❌ Entfernen
 
 </button>
-
 
 
 </div>
@@ -243,25 +282,8 @@ ${product.quantity}
 
 
 
-
 totalPrice.innerHTML =
-
-"Gesamt: " + total + " €";
-
-
-
-}
-
-
-catch(error){
-
-console.log(error);
-
-cartContainer.innerHTML =
-"Fehler beim Laden des Warenkorbs";
-
-
-}
+"Gesamt: " + total.toFixed(2) + " €";
 
 
 
@@ -270,17 +292,76 @@ cartContainer.innerHTML =
 
 
 
+// ===============================
+// MENGE ÄNDERN
+// ===============================
+
+
+async function changeQuantity(id, amount){
+
+
+
+const ref =
+db.collection("carts")
+.doc(currentUser.uid)
+.collection("items")
+.doc(id);
+
+
+
+const itemDoc =
+await ref.get();
+
+
+
+let quantity =
+itemDoc.data().quantity;
+
+
+
+quantity += amount;
+
+
+
+if(quantity <= 0){
+
+
+await ref.delete();
+
+
+}
+
+else{
+
+
+await ref.update({
+
+quantity:quantity
+
+});
+
+
+}
+
+
+
+loadCart(currentUser.uid);
+
+
+
+}
 
 
 
 
 
 // ===============================
-// Produkt entfernen
+// PRODUKT ENTFERNEN
 // ===============================
 
 
 async function removeItem(id){
+
 
 
 await db.collection("carts")
@@ -294,36 +375,40 @@ await db.collection("carts")
 loadCart(currentUser.uid);
 
 
+
 }
 
 
 
 
-
-
-
-
-
 // ===============================
-// Bestellung abschicken
+// BESTELLUNG ABSCHICKEN
 // ===============================
 
 
 async function checkout(){
 
 
-if(!currentUser){
 
-return;
-
-}
+await saveDeliveryData();
 
 
 
+const userDoc =
+await db.collection("users")
+.doc(currentUser.uid)
+.get();
 
 
 
-const cartSnapshot = await db.collection("carts")
+const customer =
+userDoc.data();
+
+
+
+
+const cart =
+await db.collection("carts")
 .doc(currentUser.uid)
 .collection("items")
 .get();
@@ -331,46 +416,13 @@ const cartSnapshot = await db.collection("carts")
 
 
 
+let products=[];
 
-if(cartSnapshot.empty){
-
-
-alert(
-"Warenkorb ist leer"
-);
-
-
-return;
-
-
-}
+let total=0;
 
 
 
-
-
-
-const userDoc = await db.collection("users")
-.doc(currentUser.uid)
-.get();
-
-
-
-const customer = userDoc.data();
-
-
-
-
-let products = [];
-
-let total = 0;
-
-
-
-
-
-
-cartSnapshot.forEach(doc=>{
+cart.forEach(doc=>{
 
 
 const item = doc.data();
@@ -379,29 +431,21 @@ const item = doc.data();
 
 products.push({
 
-
 name:item.name,
-
 
 price:item.price,
 
-
 quantity:item.quantity
 
-
 });
 
 
 
-total += 
-item.price * item.quantity;
+total += item.price * item.quantity;
 
 
 
 });
-
-
-
 
 
 
@@ -416,43 +460,40 @@ customerUID:
 currentUser.uid,
 
 
-
 customerName:
 customer.name || "",
-
 
 
 customerEmail:
 customer.email || "",
 
 
+customerStreet:
+customer.street || "",
 
-customerAddress:
-customer.address || "",
 
+customerZip:
+customer.zip || "",
+
+
+customerCity:
+customer.city || "",
 
 
 customerPhone:
 customer.phone || "",
 
 
-
 products:products,
 
 
-
-totalPrice:
-total,
+totalPrice:total,
 
 
-
-status:
-"Offen",
+status:"Offen",
 
 
-
-created:
-new Date()
+created:new Date()
 
 
 
@@ -463,31 +504,19 @@ new Date()
 
 
 
-
-
-
-// Warenkorb löschen
-
-
-const items = await db.collection("carts")
+const items =
+await db.collection("carts")
 .doc(currentUser.uid)
 .collection("items")
 .get();
 
 
 
-
-
 items.forEach(doc=>{
-
 
 doc.ref.delete();
 
-
 });
-
-
-
 
 
 

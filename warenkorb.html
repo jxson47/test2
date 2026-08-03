@@ -101,10 +101,10 @@ Gesamt: 0 €
 
 
 
+
 <h3>
 📦 Lieferdaten
 </h3>
-
 
 
 <div class="card">
@@ -113,9 +113,10 @@ Gesamt: 0 €
 <p>
 Name:
 <br>
-<span id="customerName">
-Lädt...
-</span>
+<input 
+id="customerName"
+type="text"
+placeholder="Name">
 </p>
 
 
@@ -123,31 +124,67 @@ Lädt...
 <p>
 E-Mail:
 <br>
-<span id="customerEmail">
-Lädt...
-</span>
+<input 
+id="customerEmail"
+type="email"
+placeholder="E-Mail">
 </p>
+
 
 
 
 <p>
-Adresse:
+Straße:
 <br>
-<span id="customerAddress">
-Lädt...
-</span>
+<input 
+id="customerStreet"
+type="text"
+placeholder="Straße">
 </p>
+
 
 
 
 <p>
-PLZ / Ort:
+PLZ:
 <br>
-<span id="customerCity">
-Lädt...
-</span>
+<input 
+id="customerZip"
+type="text"
+placeholder="Postleitzahl">
 </p>
 
+
+
+
+<p>
+Ort:
+<br>
+<input 
+id="customerCity"
+type="text"
+placeholder="Ort">
+</p>
+
+
+
+
+<p>
+Telefon:
+<br>
+<input 
+id="customerPhone"
+type="text"
+placeholder="Telefon">
+</p>
+
+
+
+<button onclick="saveDeliveryData()">
+
+💾 Lieferdaten speichern
+
+</button>
 
 
 </div>
@@ -178,6 +215,9 @@ Lädt...
 
 
 </div>
+
+
+
 
 
 
