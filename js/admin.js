@@ -3,9 +3,10 @@
 // ===================================
 
 
-// ===============================
+// ===================================
 // ADMIN PRÜFEN
-// ===============================
+// ===================================
+
 
 auth.onAuthStateChanged(async function(user){
 
@@ -24,9 +25,11 @@ try{
 
 
 const userDoc =
+
 await db.collection("users")
 .doc(user.uid)
 .get();
+
 
 
 
@@ -40,8 +43,11 @@ return;
 
 
 
+
 const userData =
 userDoc.data();
+
+
 
 
 
@@ -53,11 +59,15 @@ showMessage(
 );
 
 
+
 setTimeout(()=>{
+
 
 window.location.href="index.html";
 
+
 },1200);
+
 
 
 return;
@@ -68,8 +78,12 @@ return;
 
 
 
+
+
+
 const welcome =
 document.getElementById("adminWelcome");
+
 
 
 const panel =
@@ -77,21 +91,35 @@ document.getElementById("adminPanel");
 
 
 
+
+
 if(welcome){
 
+
 welcome.innerHTML =
+
 "Willkommen Admin " +
+
 (userData.name || "");
 
+
 }
+
+
+
 
 
 
 if(panel){
 
+
 panel.style.display="block";
 
+
 }
+
+
+
 
 
 
@@ -99,19 +127,31 @@ loadCustomers();
 
 loadOrders();
 
+loadCancelledOrders();
+
+
+
 
 
 }
 
+
+
 catch(error){
 
+
 console.log(error);
+
 
 }
 
 
 
 });
+
+
+
+
 
 
 
@@ -127,6 +167,7 @@ console.log(error);
 async function loadCustomers(){
 
 
+
 const box =
 document.getElementById("customers");
 
@@ -140,8 +181,14 @@ return;
 
 
 
+
+
 const snapshot =
-await db.collection("users").get();
+
+await db.collection("users")
+.get();
+
+
 
 
 
@@ -149,11 +196,16 @@ box.innerHTML="";
 
 
 
+
+
 snapshot.forEach(doc=>{
+
 
 
 const user =
 doc.data();
+
+
 
 
 
@@ -164,8 +216,12 @@ box.innerHTML += `
 
 
 <h3>
+
 👤 ${user.name || "Kein Name"}
+
 </h3>
+
+
 
 
 <p>
@@ -175,6 +231,8 @@ box.innerHTML += `
 </p>
 
 
+
+
 <p>
 
 📧 ${user.email || ""}
@@ -182,11 +240,15 @@ box.innerHTML += `
 </p>
 
 
+
+
 <p>
 
 📞 ${user.phone || ""}
 
 </p>
+
+
 
 
 <p>
@@ -202,16 +264,23 @@ ${user.city || ""}
 </p>
 
 
+
 </div>
 
 
 `;
 
 
+
 });
 
 
+
 }
+
+
+
+
 
 
 
@@ -228,6 +297,7 @@ ${user.city || ""}
 async function loadOrders(){
 
 
+
 const box =
 document.getElementById("orders");
 
@@ -241,9 +311,14 @@ return;
 
 
 
+
+
 const snapshot =
+
 await db.collection("orders")
 .get();
+
+
 
 
 
@@ -251,11 +326,15 @@ box.innerHTML="";
 
 
 
+
+
 if(snapshot.empty){
 
 
 box.innerHTML =
+
 "Keine Bestellungen vorhanden.";
+
 
 
 return;
@@ -267,7 +346,10 @@ return;
 
 
 
+
+
 snapshot.forEach(doc=>{
+
 
 
 const order =
@@ -275,14 +357,20 @@ doc.data();
 
 
 
+
+
 let productsHTML="";
+
+
 
 
 
 if(order.products){
 
 
+
 order.products.forEach(product=>{
+
 
 
 productsHTML += `
@@ -308,10 +396,15 @@ ${product.price} €
 `;
 
 
+
 });
 
 
 }
+
+
+
+
 
 
 
@@ -321,9 +414,14 @@ box.innerHTML += `
 <div class="card">
 
 
+
 <h3>
+
 🛒 Bestellung
+
 </h3>
+
+
 
 
 
@@ -337,6 +435,8 @@ ${order.customerName || ""}
 
 
 
+
+
 <p>
 
 <strong>E-Mail:</strong>
@@ -344,6 +444,7 @@ ${order.customerName || ""}
 ${order.customerEmail || ""}
 
 </p>
+
 
 
 
@@ -359,13 +460,16 @@ ${order.status || "Offen"}
 
 
 
+
 <p>
 
 <strong>Gesamt:</strong>
 
-${order.totalPrice || 0} €
+${Number(order.totalPrice || 0).toFixed(2)} €
 
 </p>
+
+
 
 
 
@@ -374,6 +478,244 @@ ${order.totalPrice || 0} €
 ${productsHTML}
 
 </ul>
+
+
+
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+// ===================================
+// STORNIERTE BESTELLUNGEN LADEN
+// ===================================
+
+
+async function loadCancelledOrders(){
+
+
+
+const box =
+
+document.getElementById("cancelledOrders");
+
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+
+
+const snapshot =
+
+await db.collection("cancelledOrders")
+.get();
+
+
+
+
+
+box.innerHTML="";
+
+
+
+
+
+if(snapshot.empty){
+
+
+
+box.innerHTML =
+
+"Keine stornierten Bestellungen vorhanden.";
+
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+snapshot.forEach(doc=>{
+
+
+
+const order =
+doc.data();
+
+
+
+
+
+let productsHTML="";
+
+
+
+
+
+if(order.products){
+
+
+
+order.products.forEach(product=>{
+
+
+
+productsHTML += `
+
+
+<li>
+
+${product.name}
+
+<br>
+
+Menge:
+${product.quantity}
+
+<br>
+
+Preis:
+${product.price} €
+
+</li>
+
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+
+<h3>
+
+❌ Stornierte Bestellung
+
+</h3>
+
+
+
+
+
+<p>
+
+<strong>Kunde:</strong>
+
+${order.customerName || ""}
+
+</p>
+
+
+
+
+
+<p>
+
+<strong>E-Mail:</strong>
+
+${order.customerEmail || ""}
+
+</p>
+
+
+
+
+
+<p>
+
+<strong>Status:</strong>
+
+${order.status || "Storniert"}
+
+</p>
+
+
+
+
+
+<p>
+
+<strong>Gesamt:</strong>
+
+${Number(order.totalPrice || 0).toFixed(2)} €
+
+</p>
+
+
+
+
+
+<p>
+
+<strong>Storniert am:</strong>
+
+${
+order.cancelledAt?.toDate
+?
+order.cancelledAt.toDate().toLocaleString()
+:
+""
+}
+
+</p>
+
+
+
+
+
+<ul>
+
+${productsHTML}
+
+</ul>
+
 
 
 
