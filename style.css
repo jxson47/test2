@@ -1,12 +1,568 @@
 /* =========================
-   RollerWerkstatt Shop
+   RollerWerkstatt Premium Design
+========================= */
+
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Arial, sans-serif;
+}
+
+
+html {
+    scroll-behavior:smooth;
+}
+
+
+body {
+
+    background:#0b0e13;
+    color:white;
+    min-height:100vh;
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+
+header {
+
+    width:100%;
+    padding:20px 8%;
+
+    background:
+    rgba(15,18,25,0.95);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:sticky;
+    top:0;
+
+    z-index:100;
+
+    border-bottom:1px solid rgba(255,255,255,0.08);
+
+}
+
+
+.logo {
+
+    font-size:28px;
+    font-weight:800;
+
+    color:#00b7ff;
+
+    letter-spacing:1px;
+
+}
+
+
+nav a {
+
+    color:white;
+
+    text-decoration:none;
+
+    margin-left:25px;
+
+    font-size:16px;
+
+    transition:.3s;
+
+}
+
+
+nav a:hover {
+
+    color:#00b7ff;
+
+}
+
+
+
+/* =========================
+   HERO
+========================= */
+
+
+.hero {
+
+    min-height:90vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    background:
+
+    linear-gradient(
+    rgba(0,0,0,.65),
+    rgba(0,0,0,.85)
+    ),
+
+    url("yamaha-aerox.jpg");
+
+    background-size:cover;
+    background-position:center;
+
+    padding:40px 10% 120px;
+
+}
+
+
+.hero h1 {
+
+    font-size:60px;
+
+    line-height:1.1;
+
+    margin-bottom:25px;
+
+}
+
+
+.hero span {
+
+    color:#00b7ff;
+
+}
+
+
+.hero p {
+
+    font-size:21px;
+
+    color:#ddd;
+
+    max-width:700px;
+
+    margin:auto;
+
+    line-height:1.7;
+
+}
+
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+
+.button {
+
+    display:inline-block;
+
+    margin-top:45px;
+
+    padding:15px 35px;
+
+    background:#00b7ff;
+
+    color:#001018;
+
+    border-radius:40px;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+
+.button:hover {
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 10px 30px rgba(0,183,255,.4);
+
+}
+
+
+.small {
+
+    padding:12px 25px;
+
+}
+
+
+
+/* =========================
+   SECTIONS
+========================= */
+
+
+section {
+
+    padding:100px 10%;
+
+    margin-bottom:40px;
+
+}
+
+
+h2 {
+
+    text-align:center;
+
+    font-size:38px;
+
+    margin-bottom:70px;
+
+}
+
+
+.center {
+
+    text-align:center;
+
+    line-height:2;
+
+    font-size:20px;
+
+}
+
+
+
+/* =========================
+   CARDS
+========================= */
+
+
+.cards {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(260px,1fr));
+
+    gap:35px;
+
+    margin-top:50px;
+
+    margin-bottom:80px;
+
+}
+
+
+.card {
+
+    background:
+
+    linear-gradient(
+    145deg,
+    #171c25,
+    #10141b
+    );
+
+    padding:40px;
+
+    border-radius:20px;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    transition:.3s;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    min-height:260px;
+
+}
+
+
+.card:hover {
+
+    transform:translateY(-8px);
+
+    border-color:#00b7ff;
+
+}
+
+
+.card h3 {
+
+    color:#00b7ff;
+
+    margin-bottom:20px;
+
+    font-size:23px;
+
+}
+
+
+.card p {
+
+    color:#ccc;
+
+    line-height:1.8;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.card .button {
+
+    align-self:center;
+
+    margin-top:auto;
+
+}
+
+
+
+/* =========================
+   DARK SECTIONS
+========================= */
+
+
+.dark {
+
+    background:#11151c;
+
+}
+
+
+
+/* =========================
+   TAGS
+========================= */
+
+
+.tags {
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:15px;
+
+}
+
+
+.tags div {
+
+    background:#171d27;
+
+    padding:15px 25px;
+
+    border-radius:30px;
+
+    border:1px solid #273140;
+
+    color:#00b7ff;
+
+}
+
+
+
+/* =========================
+   LOGIN / REGISTER
+========================= */
+
+
+.container {
+
+    width:90%;
+
+    max-width:1100px;
+
+    margin:90px auto;
+
+}
+
+
+.box {
+
+    background:
+
+    linear-gradient(
+    145deg,
+    #171c25,
+    #0f131a
+    );
+
+    padding:45px;
+
+    border-radius:20px;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.4);
+
+}
+
+
+input {
+
+    width:100%;
+
+    padding:15px;
+
+    margin:10px 0;
+
+    background:#0b0e13;
+
+    color:white;
+
+    border:1px solid #293241;
+
+    border-radius:10px;
+
+}
+
+
+input:focus {
+
+    outline:none;
+
+    border-color:#00b7ff;
+
+}
+
+
+button {
+
+    padding:14px 30px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:#00b7ff;
+
+    color:#001018;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+button:hover {
+
+    transform:scale(1.05);
+
+}
+/* =========================
+   ZURÜCK BUTTON
+========================= */
+
+
+.back-button {
+
+    position:fixed;
+
+    top:90px;
+
+    left:25px;
+
+    z-index:200;
+
+    background:#171d27;
+
+    color:white;
+
+    border:1px solid #00b7ff;
+
+    padding:12px 22px;
+
+}
+
+
+.back-button:hover {
+
+    background:#00b7ff;
+
+    color:#001018;
+
+}
+
+
+
+/* =========================
+   KONTAKT
+========================= */
+
+
+.contact {
+
+    text-align:center;
+
+    padding-top:120px;
+
+    padding-bottom:120px;
+
+}
+
+
+.contact p {
+
+    line-height:2;
+
+    color:#ddd;
+
+}
+
+
+
+/* =========================
+   KUNDENKONTO / SHOP BEREICH
+========================= */
+
+
+.account-section {
+
+    margin-top:100px;
+
+    margin-bottom:100px;
+
+}
+
+
+.account-section .card {
+
+    padding:45px;
+
+}
+
+
+
+/* =========================
+   SHOP SYSTEM
 ========================= */
 
 
 .shop-header {
 
     text-align:center;
-    margin-bottom:50px;
+
+    margin-bottom:60px;
 
 }
 
@@ -14,7 +570,10 @@
 .shop-header h1 {
 
     color:#00b7ff;
+
     font-size:45px;
+
+    margin-bottom:20px;
 
 }
 
@@ -22,14 +581,15 @@
 .shop-header p {
 
     color:#ccc;
+
     font-size:18px;
 
 }
 
 
 
-
 /* Kategorien */
+
 
 .shop-grid {
 
@@ -38,17 +598,15 @@
     grid-template-columns:
     repeat(auto-fit,minmax(230px,1fr));
 
-    gap:25px;
+    gap:30px;
 
-    margin-top:30px;
+    margin-top:40px;
 
 }
 
 
 
-
 .shop-category {
-
 
     background:
 
@@ -58,14 +616,12 @@
     #10141b
     );
 
-
-    padding:35px;
+    padding:40px;
 
     border-radius:20px;
 
     border:
     1px solid rgba(255,255,255,.08);
-
 
     text-align:center;
 
@@ -73,32 +629,34 @@
 
     transition:.3s;
 
-
 }
 
 
-
 .shop-category:hover {
-
 
     transform:translateY(-8px);
 
     border-color:#00b7ff;
 
-
 }
-
 
 
 .shop-category h2 {
 
     color:#00b7ff;
 
+    font-size:28px;
+
     margin-bottom:15px;
 
 }
 
 
+.shop-category p {
+
+    color:#aaa;
+
+}
 
 
 
@@ -107,10 +665,9 @@
 
 .shop-subcategory {
 
-
     background:#171d27;
 
-    padding:20px;
+    padding:25px;
 
     border-radius:15px;
 
@@ -118,26 +675,29 @@
 
     cursor:pointer;
 
-
     border:
+
     1px solid rgba(255,255,255,.08);
 
+    transition:.3s;
 
 }
 
 
-
 .shop-subcategory:hover {
-
 
     background:#00b7ff;
 
     color:#001018;
 
-
 }
 
 
+.shop-subcategory h3 {
+
+    margin:0;
+
+}
 
 
 
@@ -146,28 +706,20 @@
 
 .product-grid {
 
-
     display:grid;
-
 
     grid-template-columns:
     repeat(auto-fit,minmax(280px,1fr));
 
+    gap:35px;
 
-    gap:30px;
-
-
-    margin-top:50px;
-
+    margin-top:60px;
 
 }
 
 
 
-
-
 .product-card {
-
 
     background:
 
@@ -177,80 +729,222 @@
     #10141b
     );
 
-
-    padding:30px;
-
+    padding:35px;
 
     border-radius:20px;
 
-
     border:
-    1px solid rgba(255,255,255,.08);
 
+    1px solid rgba(255,255,255,.08);
 
     text-align:center;
 
+    overflow:hidden;
 
 }
-
-
 
 
 
 .product-image {
 
-
     width:100%;
 
     height:250px;
 
-
     object-fit:contain;
-
 
     border-radius:15px;
 
-
     background:#0b0e13;
-
 
     margin-bottom:20px;
 
+}
+
+
+
+.product-card img {
+
+    transition:.4s;
 
 }
 
+
+.product-card:hover img {
+
+    transform:scale(1.05);
+
+}
 
 
 .product-card h2 {
 
-
     color:#00b7ff;
 
-    font-size:22px;
+    font-size:23px;
 
+    margin-bottom:15px;
 
 }
-
 
 
 .product-card h3 {
 
-
     color:white;
 
-    font-size:26px;
+    font-size:28px;
 
+    margin-top:20px;
+
+}
+
+
+.product-card p {
+
+    color:#ccc;
+
+    line-height:1.7;
+
+}
+
+
+.product-card button {
+
+    width:100%;
+
+    margin-top:25px;
 
 }
 
 
 
-.product-card button {
+.category {
+
+    color:#00b7ff;
+
+    text-transform:uppercase;
+
+    font-size:13px;
+
+}
 
 
-    width:100%;
+
+/* =========================
+   FOOTER
+========================= */
+
+
+footer {
+
+    background:#07090d;
+
+    text-align:center;
+
+    padding:35px;
+
+    color:#888;
+
+    line-height:2;
+
+}
+
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
+@media(max-width:750px){
+
+
+header {
+
+    flex-direction:column;
+
+}
+
+
+nav {
 
     margin-top:20px;
+
+}
+
+
+nav a {
+
+    margin:10px;
+
+    display:inline-block;
+
+}
+
+
+
+.hero h1 {
+
+    font-size:40px;
+
+}
+
+
+
+.hero p {
+
+    font-size:18px;
+
+}
+
+
+
+h2 {
+
+    font-size:30px;
+
+}
+
+
+
+.container {
+
+    width:92%;
+
+}
+
+
+
+.back-button {
+
+    top:20px;
+
+    left:15px;
+
+}
+
+
+
+.shop-header h1 {
+
+    font-size:32px;
+
+}
+
+
+
+.product-grid {
+
+    grid-template-columns:1fr;
+
+}
+
+
+.cards {
+
+    grid-template-columns:1fr;
+
+}
 
 
 }
