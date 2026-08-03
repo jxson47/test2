@@ -62,30 +62,3 @@ document.body.appendChild(backButton);
 
 
 });
-
-
-
-
-// ===================================
-// Später Firebase Login Funktionen
-// ===================================
-
-
-
-function logout(){
-
-
-console.log("Logout wird später aktiviert");
-
-
-}
-
-
-
-function checkLogin(){
-
-
-console.log("Loginprüfung wird später aktiviert");
-
-
-}
