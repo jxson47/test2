@@ -9,7 +9,6 @@ document.getElementById("productContainer");
 
 
 
-
 // ===============================
 // Kategorien aus Firebase laden
 // ===============================
@@ -64,6 +63,8 @@ Kategorie öffnen
 
 
 
+
+
 // ===============================
 // Unterkategorien laden
 // ===============================
@@ -100,7 +101,7 @@ subcategoryContainer.innerHTML += `
 
 <div class="shop-subcategory"
 
-onclick="loadProducts('${doc.id}')">
+onclick="loadProducts('${categoryID}','${doc.id}')">
 
 
 <h3>
@@ -124,28 +125,38 @@ ${sub.name}
 
 
 
+
 // ===============================
 // Produkte laden
 // ===============================
 
 
-async function loadProducts(subcategory){
+async function loadProducts(categoryID, subcategoryID){
 
 
-productContainer.innerHTML=
+productContainer.innerHTML =
 "Lade Produkte...";
+
+
+
+try {
 
 
 
 const snapshot =
 
-await db.collection("products")
-.where("subcategory","==",subcategory)
+await db.collection("categories")
+.doc(categoryID)
+.collection("subcategories")
+.doc(subcategoryID)
+.collection("products")
 .get();
 
 
 
+
 productContainer.innerHTML="";
+
 
 
 
@@ -154,24 +165,31 @@ if(snapshot.empty){
 
 productContainer.innerHTML=`
 
+
 <div class="card">
+
 
 <h3>
 Keine Produkte vorhanden
 </h3>
 
+
 <p>
 Diese Kategorie wird noch gefüllt.
 </p>
 
+
 </div>
+
 
 `;
 
 
 return;
 
+
 }
+
 
 
 
@@ -197,14 +215,17 @@ class="product-image"
 src="${product.image || ''}">
 
 
+
 <h2>
 ${product.name}
 </h2>
 
 
+
 <p>
 ${product.description || ""}
 </p>
+
 
 
 <h3>
@@ -213,7 +234,8 @@ ${product.price} €
 
 
 
-<button onclick="buyProduct('${doc.id}')">
+
+<button onclick="buyProduct('${categoryID}','${subcategoryID}','${doc.id}')">
 
 Kaufen
 
@@ -231,7 +253,25 @@ Kaufen
 });
 
 
+
 }
+
+catch(error){
+
+
+console.log(error);
+
+
+productContainer.innerHTML =
+"Fehler beim Laden der Produkte";
+
+
+}
+
+
+}
+
+
 
 
 
@@ -241,7 +281,8 @@ Kaufen
 // ===============================
 
 
-async function buyProduct(id){
+async function buyProduct(categoryID, subcategoryID, productID){
+
 
 
 const user = auth.currentUser;
@@ -263,11 +304,17 @@ return;
 
 
 
+
 const productDoc =
 
-await db.collection("products")
-.doc(id)
+await db.collection("categories")
+.doc(categoryID)
+.collection("subcategories")
+.doc(subcategoryID)
+.collection("products")
+.doc(productID)
 .get();
+
 
 
 
@@ -277,12 +324,14 @@ productDoc.data();
 
 
 
+
+
 await db.collection("orders").add({
 
 
 customerUID:user.uid,
 
-productID:id,
+productID:productID,
 
 productName:product.name,
 
@@ -300,7 +349,10 @@ created:new Date()
 alert("Bestellung wurde aufgenommen!");
 
 
+
 }
+
+
 
 
 
