@@ -1183,3 +1183,41 @@ h2 {
     background:#c90000;
 
 }
+/* =========================
+   KLEINE KONTO BUTTONS
+========================= */
+
+
+/* Daten speichern Button */
+.account-save-button {
+
+    padding:10px 22px;
+
+    font-size:14px;
+
+    border-radius:25px;
+
+}
+
+
+/* Bestellung stornieren Button */
+.cancel-button {
+
+    padding:10px 20px;
+
+    font-size:14px;
+
+    border-radius:25px;
+
+    margin-top:15px;
+
+}
+
+
+/* Hover bleibt professionell */
+.account-save-button:hover,
+.cancel-button:hover {
+
+    transform:scale(1.03);
+
+}

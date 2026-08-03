@@ -143,6 +143,7 @@ welcome.innerHTML =
 
 
 
+
 await loadOrders(user.uid);
 
 
@@ -200,7 +201,6 @@ showMessage(
 
 return;
 
-
 }
 
 
@@ -224,8 +224,8 @@ email:
 accountUser.email
 
 
-
 };
+
 
 
 
@@ -241,14 +241,6 @@ await db.collection("users")
 showMessage(
 "✅ Daten erfolgreich gespeichert."
 );
-
-
-
-setTimeout(()=>{
-
-hideMessage();
-
-},2000);
 
 
 
@@ -295,6 +287,7 @@ const container =
 document.getElementById("ordersContainer");
 
 
+
 if(!container){
 
 return;
@@ -335,7 +328,6 @@ if(snapshot.empty){
 
 container.innerHTML = `
 
-
 <div class="card">
 
 <p>
@@ -344,14 +336,13 @@ Noch keine Bestellungen vorhanden.
 
 </div>
 
-
 `;
+
 
 return;
 
 
 }
-
 
 
 
@@ -380,7 +371,6 @@ order.products.forEach(product=>{
 
 products += `
 
-
 <li>
 
 ${product.name}
@@ -403,11 +393,7 @@ ${product.price} €
 
 });
 
-
 }
-
-
-
 
 
 
@@ -437,7 +423,6 @@ ${order.status || "Offen"}
 
 
 
-
 <p>
 
 <strong>Gesamt:</strong>
@@ -445,7 +430,6 @@ ${order.status || "Offen"}
 ${Number(order.totalPrice || 0).toFixed(2)} €
 
 </p>
-
 
 
 
@@ -459,8 +443,9 @@ ${products}
 
 
 
+<button class="cancel-button"
 
-<button onclick="cancelOrder('${doc.id}')">
+onclick="cancelOrder('${doc.id}')">
 
 
 ❌ Bestellung stornieren
@@ -498,7 +483,6 @@ error
 
 container.innerHTML = `
 
-
 <div class="card">
 
 <p>
@@ -508,7 +492,6 @@ Keine Bestellungen konnten geladen werden.
 </p>
 
 </div>
-
 
 `;
 
@@ -533,24 +516,16 @@ Keine Bestellungen konnten geladen werden.
 // ===================================
 
 
-async function cancelOrder(orderID){
+function cancelOrder(orderID){
 
 
 
-const confirmCancel =
+confirmMessage(
 
-confirm(
-"Möchtest du diese Bestellung wirklich stornieren?"
-);
+"Möchtest du diese Bestellung wirklich stornieren?",
 
 
-
-if(!confirmCancel){
-
-return;
-
-}
-
+async function(){
 
 
 
@@ -588,7 +563,6 @@ orderDoc.data();
 
 
 
-
 await db.collection("cancelledOrders")
 .doc(orderID)
 .set({
@@ -610,9 +584,7 @@ cancelledAt:new Date()
 
 
 
-
 await orderRef.delete();
-
 
 
 
@@ -629,10 +601,11 @@ showMessage(
 setTimeout(()=>{
 
 
-location.reload();
+loadOrders(accountUser.uid);
 
 
 },1200);
+
 
 
 
@@ -664,6 +637,14 @@ showMessage(
 
 
 
+);
+
+
+
+}
+
+
+
 
 
 
@@ -683,11 +664,9 @@ auth.signOut()
 .then(()=>{
 
 
-
 showMessage(
 "✅ Erfolgreich abgemeldet."
 );
-
 
 
 
@@ -702,6 +681,7 @@ window.location.href="login.html";
 
 
 })
+
 
 .catch(error=>{
 
@@ -758,6 +738,123 @@ async function(){
 try{
 
 
+
+await deleteUserAccount(user);
+
+
+
+}
+
+
+
+catch(error){
+
+
+
+if(error.code === "auth/requires-recent-login"){
+
+
+
+passwordMessage(async function(password){
+
+
+try{
+
+
+const credential =
+
+firebase.auth.EmailAuthProvider.credential(
+
+user.email,
+
+password
+
+);
+
+
+
+await user.reauthenticateWithCredential(
+credential
+);
+
+
+
+await deleteUserAccount(user);
+
+
+
+}
+
+
+catch(error){
+
+
+console.log(error);
+
+
+
+showMessage(
+
+"❌ Passwort falsch oder Konto konnte nicht gelöscht werden."
+
+);
+
+
+
+}
+
+
+
+});
+
+
+
+}
+
+else{
+
+
+console.log(error);
+
+
+
+showMessage(
+
+"❌ Konto konnte nicht gelöscht werden."
+
+);
+
+
+
+}
+
+
+
+}
+
+
+
+}
+
+
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function deleteUserAccount(user){
+
+
 await db.collection("users")
 .doc(user.uid)
 .delete();
@@ -771,9 +868,10 @@ await user.delete();
 
 
 showMessage(
-"✅ Konto wurde gelöscht."
-);
 
+"✅ Konto wurde gelöscht."
+
+);
 
 
 
@@ -785,37 +883,6 @@ window.location.href="login.html";
 
 
 },1200);
-
-
-
-
-
-}
-
-
-
-catch(error){
-
-
-console.log(error);
-
-
-
-showMessage(
-"❌ Konto konnte nicht gelöscht werden."
-);
-
-
-
-}
-
-
-
-}
-
-
-
-);
 
 
 

@@ -7,12 +7,16 @@ let confirmCallback = null;
 
 let messageTimer = null;
 
+let passwordCallback = null;
 
 
+
+// ===================================
+// NACHRICHT ANZEIGEN
+// ===================================
 
 
 function showMessage(text, type="info", buttons=""){
-
 
 
 const box =
@@ -36,8 +40,6 @@ return;
 
 
 
-
-
 messageText.innerHTML = text;
 
 
@@ -50,16 +52,11 @@ messageButtons.innerHTML = buttons;
 
 
 
-
 box.className =
 "message-box show " + type;
 
 
 
-
-
-
-// alten Timer löschen
 
 if(messageTimer){
 
@@ -70,12 +67,7 @@ clearTimeout(messageTimer);
 
 
 
-
-
-// Nur normale Meldungen automatisch schließen
-
 if(type !== "warning" && buttons === ""){
-
 
 
 messageTimer = setTimeout(()=>{
@@ -96,27 +88,34 @@ hideMessage();
 
 
 
-
-
-
-
+// ===================================
+// NACHRICHT SCHLIESSEN
+// ===================================
 
 
 function hideMessage(){
-
 
 
 const box =
 document.getElementById("messageBox");
 
 
-
 if(box){
-
 
 box.className =
 "message-box";
 
+}
+
+
+
+const messageButtons =
+document.getElementById("messageButtons");
+
+
+if(messageButtons){
+
+messageButtons.innerHTML="";
 
 }
 
@@ -129,17 +128,14 @@ clearTimeout(messageTimer);
 }
 
 
+
 confirmCallback = null;
+
+passwordCallback = null;
 
 
 
 }
-
-
-
-
-
-
 
 
 
@@ -151,9 +147,7 @@ confirmCallback = null;
 function confirmMessage(text, callback){
 
 
-
 confirmCallback = callback;
-
 
 
 showMessage(
@@ -171,7 +165,85 @@ Abbrechen
 </button>
 
 
+
 <button onclick="confirmAction()">
+
+Bestätigen
+
+</button>
+
+`
+
+);
+
+
+}
+
+
+
+
+
+function confirmAction(){
+
+
+
+if(confirmCallback){
+
+
+confirmCallback();
+
+
+}
+
+
+
+hideMessage();
+
+
+
+}
+
+
+
+// ===================================
+// PASSWORT ABFRAGE
+// ===================================
+
+
+function passwordMessage(callback){
+
+
+passwordCallback = callback;
+
+
+
+showMessage(
+
+"Bitte gib dein Passwort erneut ein, um dein Konto zu löschen.",
+
+"warning",
+
+`
+
+<input 
+id="deletePassword"
+type="password"
+placeholder="Passwort"
+>
+
+
+<br>
+
+
+<button onclick="hideMessage()">
+
+Abbrechen
+
+</button>
+
+
+
+<button onclick="confirmPassword()">
 
 Bestätigen
 
@@ -188,19 +260,35 @@ Bestätigen
 
 
 
+function confirmPassword(){
+
+
+const input =
+document.getElementById("deletePassword");
 
 
 
+if(!input || !input.value){
 
 
-function confirmAction(){
+showMessage(
+"Bitte Passwort eingeben."
+);
+
+
+return;
+
+
+}
 
 
 
-if(confirmCallback){
+if(passwordCallback){
 
 
-confirmCallback();
+passwordCallback(
+input.value
+);
 
 
 }
