@@ -15,6 +15,15 @@ const productContainer =
 document.getElementById("productContainer");
 
 
+const subcategorySection =
+document.getElementById("subcategorySection");
+
+
+const productsSection =
+document.getElementById("productsSection");
+
+
+
 
 
 // ===============================
@@ -32,14 +41,51 @@ return;
 }
 
 
+
 try{
 
 
 categoryContainer.innerHTML="";
 
 
+// beim Start alles verstecken
+
+if(subcategorySection){
+
+subcategorySection.style.display="none";
+
+}
+
+
+if(productsSection){
+
+productsSection.style.display="none";
+
+}
+
+
+if(subcategoryContainer){
+
+subcategoryContainer.innerHTML="";
+
+}
+
+
+if(productContainer){
+
+productContainer.innerHTML="";
+
+}
+
+
+
+
+
 const snapshot =
+
 await db.collection("categories").get();
+
+
 
 
 
@@ -48,6 +94,7 @@ snapshot.forEach(doc=>{
 
 const category =
 doc.data();
+
 
 
 
@@ -81,6 +128,7 @@ Kategorie öffnen
 
 
 });
+
 
 
 }
@@ -122,6 +170,7 @@ return;
 subcategoryContainer.innerHTML="";
 
 
+
 if(productContainer){
 
 productContainer.innerHTML="";
@@ -130,6 +179,19 @@ productContainer.innerHTML="";
 
 
 
+
+
+if(productsSection){
+
+productsSection.style.display="none";
+
+}
+
+
+
+
+
+try{
 
 
 const snapshot =
@@ -151,6 +213,7 @@ doc.data();
 
 
 
+
 subcategoryContainer.innerHTML += `
 
 
@@ -166,8 +229,14 @@ ${sub.name}
 </h3>
 
 
-</div>
+<p>
 
+Unterkategorie öffnen
+
+</p>
+
+
+</div>
 
 
 `;
@@ -179,20 +248,16 @@ ${sub.name}
 
 
 
-// automatisch zu Unterkategorien springen
 
+if(subcategorySection){
 
-const section =
-document.getElementById("subcategorySection");
-
-
-if(section){
+subcategorySection.style.display="block";
 
 
 setTimeout(()=>{
 
 
-section.scrollIntoView({
+subcategorySection.scrollIntoView({
 
 behavior:"smooth"
 
@@ -200,6 +265,20 @@ behavior:"smooth"
 
 
 },200);
+
+
+}
+
+
+
+}
+
+
+
+catch(error){
+
+
+console.log(error);
 
 
 }
@@ -233,8 +312,21 @@ return;
 
 
 
+
 productContainer.innerHTML =
+
 "Lade Produkte...";
+
+
+
+
+
+if(productsSection){
+
+productsSection.style.display="block";
+
+}
+
 
 
 
@@ -256,7 +348,9 @@ await db.collection("categories")
 
 
 
+
 productContainer.innerHTML="";
+
 
 
 
@@ -282,10 +376,6 @@ Keine Produkte vorhanden
 
 
 `;
-
-
-
-return;
 
 
 }
@@ -365,7 +455,6 @@ ${product.price} €
 </div>
 
 
-
 `;
 
 
@@ -376,21 +465,16 @@ ${product.price} €
 
 
 
-// automatisch zu Produkten springen
-
-
-const section =
-document.getElementById("productsSection");
 
 
 
-if(section){
+if(productsSection){
 
 
 setTimeout(()=>{
 
 
-section.scrollIntoView({
+productsSection.scrollIntoView({
 
 behavior:"smooth"
 
@@ -405,12 +489,13 @@ behavior:"smooth"
 
 
 
-
 }
 
 catch(error){
 
+
 console.log(error);
+
 
 }
 
@@ -445,7 +530,9 @@ if(!user){
 
 window.location.href="login.html";
 
+
 return;
+
 
 }
 
@@ -454,10 +541,7 @@ return;
 
 
 
-
 try{
-
-
 
 
 
@@ -470,7 +554,6 @@ await db.collection("categories")
 .collection("products")
 .doc(productID)
 .get();
-
 
 
 
@@ -493,10 +576,8 @@ return;
 
 
 
-
 const product =
 productDoc.data();
-
 
 
 
@@ -515,10 +596,8 @@ db.collection("carts")
 
 
 
-
 const cartItem =
 await cartRef.get();
-
 
 
 
@@ -529,13 +608,9 @@ if(cartItem.exists){
 
 
 
-
-
 const quantity =
 
 cartItem.data().quantity || 1;
-
-
 
 
 
@@ -553,33 +628,22 @@ else{
 
 
 
-
-
 await cartRef.set({
 
 
-
-name:
-product.name,
+name:product.name,
 
 
-
-price:
-product.price,
+price:product.price,
 
 
-
-image:
-product.image || "",
-
+image:product.image || "",
 
 
 quantity:1,
 
 
-
 added:new Date()
-
 
 
 });
@@ -587,7 +651,6 @@ added:new Date()
 
 
 }
-
 
 
 
@@ -605,6 +668,8 @@ updateCartCount();
 
 
 }
+
+
 
 catch(error){
 
