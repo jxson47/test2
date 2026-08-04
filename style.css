@@ -1221,3 +1221,24 @@ h2 {
     transform:scale(1.03);
 
 }
+/* =========================
+   FOOTER LINKS
+========================= */
+
+footer a{
+
+    color:#00b7ff;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+footer a:hover{
+
+    color:white;
+
+    text-decoration:underline;
+
+}
