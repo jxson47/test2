@@ -17,7 +17,6 @@ document.getElementById("productContainer");
 
 
 
-
 // ===============================
 // KATEGORIEN LADEN
 // ===============================
@@ -101,6 +100,8 @@ console.log(error);
 
 
 
+
+
 // ===============================
 // KATEGORIE ÖFFNEN
 // ===============================
@@ -129,12 +130,16 @@ productContainer.innerHTML="";
 
 
 
+
+
 const snapshot =
 
 await db.collection("categories")
 .doc(categoryID)
 .collection("subcategories")
 .get();
+
+
 
 
 
@@ -164,6 +169,7 @@ ${sub.name}
 </div>
 
 
+
 `;
 
 
@@ -171,7 +177,38 @@ ${sub.name}
 });
 
 
+
+
+// automatisch zu Unterkategorien springen
+
+
+const section =
+document.getElementById("subcategorySection");
+
+
+if(section){
+
+
+setTimeout(()=>{
+
+
+section.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+
+},200);
+
+
 }
+
+
+
+}
+
+
 
 
 
@@ -201,7 +238,9 @@ productContainer.innerHTML =
 
 
 
+
 try{
+
 
 
 const snapshot =
@@ -215,7 +254,11 @@ await db.collection("categories")
 
 
 
+
+
 productContainer.innerHTML="";
+
+
 
 
 
@@ -224,21 +267,32 @@ if(snapshot.empty){
 
 productContainer.innerHTML = `
 
+
 <div class="card">
 
+
 <h3>
+
 Keine Produkte vorhanden
+
 </h3>
+
 
 </div>
 
+
 `;
+
 
 
 return;
 
 
 }
+
+
+
+
 
 
 
@@ -250,10 +304,12 @@ doc.data();
 
 
 
+
 productContainer.innerHTML += `
 
 
 <div class="product-card">
+
 
 
 <img
@@ -261,6 +317,8 @@ productContainer.innerHTML += `
 class="product-image"
 
 src="${product.image || ''}">
+
+
 
 
 
@@ -272,11 +330,15 @@ ${product.name}
 
 
 
+
+
 <p>
 
 ${product.description || ""}
 
 </p>
+
+
 
 
 
@@ -288,14 +350,20 @@ ${product.price} €
 
 
 
+
+
 <button onclick="addToCart('${categoryID}','${subcategoryID}','${doc.id}')">
 
+
 🛒 In Warenkorb
+
 
 </button>
 
 
+
 </div>
+
 
 
 `;
@@ -303,6 +371,39 @@ ${product.price} €
 
 
 });
+
+
+
+
+
+// automatisch zu Produkten springen
+
+
+const section =
+document.getElementById("productsSection");
+
+
+
+if(section){
+
+
+setTimeout(()=>{
+
+
+section.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+
+},200);
+
+
+}
+
+
+
 
 
 }
@@ -316,6 +417,8 @@ console.log(error);
 
 
 }
+
+
 
 
 
@@ -350,7 +453,11 @@ return;
 
 
 
+
+
 try{
+
+
 
 
 
@@ -368,11 +475,16 @@ await db.collection("categories")
 
 
 
+
+
 if(!productDoc.exists){
+
 
 console.log("Produkt nicht gefunden");
 
+
 return;
+
 
 }
 
@@ -380,8 +492,12 @@ return;
 
 
 
+
+
 const product =
 productDoc.data();
+
+
 
 
 
@@ -398,8 +514,12 @@ db.collection("carts")
 
 
 
+
+
 const cartItem =
 await cartRef.get();
+
+
 
 
 
@@ -409,9 +529,13 @@ if(cartItem.exists){
 
 
 
+
+
 const quantity =
 
 cartItem.data().quantity || 1;
+
+
 
 
 
@@ -428,22 +552,34 @@ quantity: quantity + 1
 else{
 
 
+
+
+
 await cartRef.set({
 
 
-name:product.name,
+
+name:
+product.name,
 
 
-price:product.price,
+
+price:
+product.price,
 
 
-image:product.image || "",
+
+image:
+product.image || "",
+
 
 
 quantity:1,
 
 
+
 added:new Date()
+
 
 
 });
@@ -456,12 +592,13 @@ added:new Date()
 
 
 
-// KEINE MELDUNG MEHR
 
 
 if(typeof updateCartCount === "function"){
 
+
 updateCartCount();
+
 
 }
 
@@ -473,8 +610,11 @@ catch(error){
 
 
 console.log(
+
 "Fehler beim Warenkorb:",
+
 error
+
 );
 
 
@@ -483,6 +623,8 @@ error
 
 
 }
+
+
 
 
 
